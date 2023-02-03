@@ -1,0 +1,79 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,600;0,700;1,400&display=swap");
+html,
+body,
+#root,
+.app,
+.wrapper {
+  background: #212121;
+  height: 100%;
+  width: 100%;
+  /* overflow: hidden; */
+  font-family: "Source Sans Pro", sans-serif;
+  overflow: hidden;
+  scrollbar-width: thin;
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+/*  Track */
+::-webkit-scrollbar-track {
+  background: #292929;
+}
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #777;
+}
+
+/* ::-webkit-scrollbar-track:hover{
+  background: #555;
+} */
+
+.app {
+  position: relative;
+  display: flex;
+  /* background: #212121; */
+  color: #fff;
+}
+.image-singUp {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.item {
+  width: 56%;
+  overflow: visible;
+  stroke: rgb(187, 134, 252);
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+container {
+  width: 150px;
+  height: 150px;
+  display: grid;
+  overflow: hidden;
+  margin: 0;
+  list-style: none;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 15px;
+  padding: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50px;
+}
+
+.item-li {
+  background: white;
+  border-radius: 100%;
+}
+@media screen and (max-width: 600px) {
+  html,
+  body,
+  #root,
+  .app,
+  .wrapper {
+    overflow: auto;
+  }
+}

@@ -1,0 +1,80 @@
+{
+  "name": "time-money",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.4",
+    "@fullcalendar/core": "^6.0.1",
+    "@fullcalendar/daygrid": "^5.11.3",
+    "@fullcalendar/interaction": "^5.11.3",
+    "@fullcalendar/list": "^5.11.3",
+    "@fullcalendar/react": "^5.11.2",
+    "@fullcalendar/timegrid": "^5.11.3",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.10",
+    "@mui/styles": "^5.10.10",
+    "@mui/x-data-grid": "^5.17.9",
+    "@mui/x-data-grid-generator": "^5.17.9",
+    "@mui/x-date-pickers": "^5.0.6",
+    "@nivo/core": "^0.80.0",
+    "@nivo/line": "^0.80.0",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "animated-number-react": "^0.1.2",
+    "axios": "^1.2.0",
+    "date-fns": "^2.29.3",
+    "dayjs": "^1.11.7",
+    "formik": "^2.2.9",
+    "framer-motion": "^8.5.5",
+    "fullcalendar": "^5.11.3",
+    "install": "^0.13.0",
+    "moment": "^2.29.4",
+    "ng-fullcalendar": "^2.0.3",
+    "node-sass": "^7.0.3",
+    "postcss-calc": "^8.2.4",
+    "postcss-custom-properties": "^13.0.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-number-format": "^5.1.1",
+    "react-pro-sidebar": "^1.0.0-alpha.7",
+    "react-router-dom": "^6.4.2",
+    "react-scripts": "5.0.1",
+    "reactjs-localstorage": "^1.0.1",
+    "web-vitals": "^2.1.4",
+    "yup": "^0.32.11"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "postcss": "^8.4.19",
+    "postcss-loader": "^7.0.1"
+  },
+  "main": "index.js",
+  "license": "MIT",
+  "description": "Progetto ordinare (CRUD) App Ti permette di salvare tempo lavorativo, sommare totale del mese , totale anno , calcolare guadagno mensile guadagno annuale e grafico a linee dei Mesi. Per entrare puoi registrarsi oppure entrare co test account. [url di sito](https://time-money.vercel.app/)",
+  "author": ""
+}
