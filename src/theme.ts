@@ -1,8 +1,30 @@
 import { createContext, useState, useMemo } from "react";
-import { createTheme } from "@mui/material/styles";
+import { createTheme  } from "@mui/material/styles";
 
-// color design tokens export
-export const tokens = (mode) => ({
+interface ColorTokens {
+  100: string;
+  200: string;
+  300: string;
+  400: string;
+  500: string;
+  600: string;
+  700: string;
+  800: string;
+  900: string;
+}
+
+interface ThemeColors {
+  textColor: ColorTokens;
+  pink: ColorTokens;
+  grey: ColorTokens;
+  primary: ColorTokens;
+  secondary: ColorTokens;
+  greenAccent: ColorTokens;
+  redAccent: ColorTokens;
+  blueAccent: ColorTokens;
+}
+
+export const tokens = (mode: any) : ThemeColors => ({
   ...(mode === "dark"
     ? {
         textColor: {
@@ -31,13 +53,10 @@ export const tokens = (mode) => ({
           600: "#525252",
           700: "#3d3d3d",
           800: "#292929",
-          //800 : "#1E1E1E",
           900: "#141414",
         },
         primary: {
-          //100: "#121212",
           100: "#212121",
-          //100 : "#2C2C2C",
           200: "#666",
           300: "#727681",
           400: "#121212",
@@ -56,7 +75,6 @@ export const tokens = (mode) => ({
           300: "#94e2cd",
           400: "#03DAC6",
           500: "#4cceac",
-          // 500 : "#03DAC6",
           600: "#3da58a",
           700: "#2e7c67",
           800: "#1e5245",
@@ -142,10 +160,10 @@ export const tokens = (mode) => ({
           900: "#e1e2fe",
         },
       }),
-});
+} as ThemeColors);
 
 // mui theme settings
-export const themeSettings = (mode) => {
+export const themeSettings = (mode: any) => {
   const colors = tokens(mode);
   return {
     palette: {

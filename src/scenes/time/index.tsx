@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import dayjs from "dayjs";
 import CircularIndeterminate from "../../components/Circular";
@@ -8,6 +8,14 @@ import CustomDataGrid from "../../components/DataGrid";
 import { motion } from "framer-motion";
 import { getTimeUser, deletTime } from "../../api";
 
+interface TimeData {
+  _id: string;
+  company: string;
+  start: string;
+  end: string;
+  total: number;
+  dateCreated: string;
+}
 const colums = [
   {
     field: "nam",
@@ -59,67 +67,65 @@ const colums = [
   },
 ];
 
-const ListTime = () => {
-  const [rows, setRows] = useState([]);
-  const [selectedRows, setSelectedRows] = useState([]);
+
+
+const ListTime: React.FC = () => {
+  const [rows, setRows] = useState<TimeData[]>([]);
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     setLoading(true);
     const loadData = async () => {
       try {
-        const newData = [];
-
         const response = await getTimeUser();
 
         if (Array.isArray(response.data.data)) {
           let nam = 1;
-          response.data.data.forEach((el) => {
-            const updateData = {
-              id: el._id,
-              nam: nam,
-              company: el.company,
-              start: el.start.slice(0, 5),
-              end: el.end.slice(0, 5),
-              total: el.total,
-              dateCreated: dayjs(el.dateCreated).format("DD-MM-YYYY"),
-            };
-            newData.push(updateData);
-            nam += 1;
-          });
+          const newData: TimeData[] = response.data.data.map((el: any) => ({
+            _id: el._id,
+            company: el.company,
+            start: el.start.slice(0, 5),
+            end: el.end.slice(0, 5),
+            total: el.total,
+            dateCreated: dayjs(el.dateCreated).format("DD-MM-YYYY"),
+          }));
+          setRows(newData);
         }
-
-        setRows(newData);
       } catch (error) {
-        if (error.response) {
-          console.log(error.response.status);
-        } else {
-          console.log("Error", error.message);
-        }
+
+        setError("Error loading data. Please try again later.");
+        
       } finally {
         setLoading(false);
       }
     };
     loadData();
   }, []);
-  const handleSelectionChange = (selection) => {
+
+  const handleSelectionChange = (selection: string[]) => {
     setSelectedRows(selection);
   };
-  function removeObjectWithId(arr, id) {
-    const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
-    if (objWithIdIndex > -1) {
-      arr.splice(objWithIdIndex, 1);
+
+  const removeObjectWithId = (arr: TimeData[], id: string) => {
+    return arr.filter((item) => item._id !== id);
+  };
+
+  const handlePurge = async () => {
+    try {
+      setLoading(true);
+      for (const id of selectedRows) {
+        await deletTime(id);
+        setRows((prevRows) => removeObjectWithId(prevRows, id));
+      }
+      setSelectedRows([]);
+    } catch (error) {
+      setError("Error deleting data. Please try again later.");
+      console.error("Error", error);
+    } finally {
+      setLoading(false);
     }
-    return arr;
-  }
-  const handlePurge = () => {
-    const newRows = [...rows];
-    selectedRows.forEach((i) => {
-      deletTime(i);
-      removeObjectWithId(newRows, i);
-    });
-    setSelectedRows([]);
-    return setRows(newRows);
   };
   return (
     <Box
@@ -127,7 +133,6 @@ const ListTime = () => {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      //exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
       <Box display="flex" justifyContent="space-between">

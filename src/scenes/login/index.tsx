@@ -1,7 +1,7 @@
-import { useState } from "react";
+import React, { useState } from "react";
 // Componets
 import SingIn from "./singIn";
-import SingUn from "./singUp";
+import SingUn from './singUp';
 
 import CssBaseline from "@mui/material/CssBaseline";
 
@@ -17,32 +17,34 @@ import Typography from "@mui/material/Typography";
 import { ThemeProvider } from "@mui/material/styles";
 import { tokens } from "../../theme";
 
-const SignInSide = () => {
+const SignInSide: React.FC = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
   const [clickSingUp, setClickSingUp] = useState(false);
-  const [selectedFile, setSelectedFile] = useState();
-  const [fileChange, setFileChange] = useState();
+  const [selectedFile, setSelectedFile] = useState<File | undefined>();
+  const [fileChange, setFileChange] = useState<string | any >();
 
   const handleSubmit = () => {
     setClickSingUp(!clickSingUp);
   };
 
-  const uploadImage = (e) => {
+  const uploadImage = (e: React.ChangeEvent<HTMLInputElement>) => {
     // image from user
-    setSelectedFile(e.target.files[0]);
-
     const { files } = e.target;
-    if (files.length === 0) {
+    if (!files || files.length === 0) {
       return;
     }
+
     const file = files[0];
+    setSelectedFile(file);
+
     const fileReader = new FileReader();
 
     fileReader.onload = () => {
       setFileChange(fileReader.result);
     };
+
     fileReader.readAsDataURL(file);
   };
 
@@ -78,10 +80,10 @@ const SignInSide = () => {
           >
             {clickSingUp ? (
               <IconButton
-                sx={{ color: colors.primary[100] }}
-                variant="contained"
-                type="submit"
-                component="label"
+                // sx={{ color: colors.primary[100] }}
+                // variant="contained"
+                // type="submit"
+                // component="label"
               >
                 <img
                   src={

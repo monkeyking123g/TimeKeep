@@ -1,9 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { Button, useTheme, Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { tokens } from "../../theme";
 
-const UseButton = ({ text, bgColor, ...otherProps }) => {
+interface IButtonProps {
+  text: string;
+  bgColor?: string;
+}
+
+const UseButton: FC<IButtonProps> = ({ text, bgColor, ...otherProps }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -11,12 +16,13 @@ const UseButton = ({ text, bgColor, ...otherProps }) => {
     ...otherProps,
     fullWidth: true,
     component: motion.button,
-    variant: "contained",
-    type: "submit",
     whileTap: { scale: 0.97 },
   };
+
   return (
     <Button
+      variant='contained'
+      type="submit"
       {...configButton}
       sx={{
         mt: 3,
@@ -34,3 +40,4 @@ const UseButton = ({ text, bgColor, ...otherProps }) => {
 };
 
 export default UseButton;
+

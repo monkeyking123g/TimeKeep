@@ -1,6 +1,6 @@
+import React, { useState, useEffect } from "react";
 import { Box, useTheme, Typography, TextField, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
@@ -13,61 +13,61 @@ import { config } from "../../components/myUseFuncrion";
 import { reactLocalStorage } from "reactjs-localstorage";
 import UseButton from "../../components/ButtonUI/Button";
 
-const SingIn = ({ handleSingUp }) => {
+interface SingInProps {
+  handleSingUp: () => void;
+}
+enum ErrorMessage {
+  PasswordOrEmail = "Email or Password Incorrect !",
+  ServerNotResponding = 'Server not responding. Please check your internet connection.',
+}
+
+const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const colors = tokens(theme.palette.mode) as any;
   const [loading, setLoading] = useState(false);
-  const [authenticated, isAuthenticated] = useState(false);
-  const [stateError, setStateError] = useState({ state: false, title: "" });
+  // const [authenticated, setAuthenticated] = useState(false);
+  const [stateError, setStateError] = useState<{ state: boolean; title: string }>({ state: false, title: "" });
 
   const CustomTextField = useStyledTextField({
     color: colors.pink[500],
     globalColor: colors.grey[800],
   });
-  let navigate = useNavigate();
+  const navigate = useNavigate();
 
-  useEffect(() => {
-    if (authenticated) {
-      console.log("User is authentificated");
-      return navigate("/");
-    }
-  }, [authenticated]);
+  // useEffect(() => {
+  //   if (authenticated) {
+  //     return navigate("/");
+  //   }
+  // }, [authenticated]);
 
-  const handleSubmit = async (event) => {
-    // loading data
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
 
     const formData = new FormData(event.currentTarget);
-    const email = formData.get("email");
-    const password = formData.get("password");
+    const email = formData.get("email") as string;
+    const password = formData.get("password") as string;
+    const sendData = {
+      email,
+      password 
+    }
+
     try {
-      const response = await Axios.get(
-        `${process.env.REACT_APP_DOMAIN}/api/user`,
-        config
-      );
-      console.log(response.data.data);
-      const currentUser = response.data.data.find(
-        (currUserResponse) =>
-          currUserResponse.email === email &&
-          currUserResponse.password === password
-      );
-
-      if (currentUser) {
-        console.log("User faund !");
-        reactLocalStorage.setObject("user", {
-          id: currentUser._id,
-          email: currentUser.email,
-          password: currentUser.password,
-          image: currentUser.image_url,
-          ernin_hour: currentUser.earning_hour,
-        });
-
-        isAuthenticated(true);
+      const response = await Axios.post(`${process.env.REACT_APP_DOMAIN}/auth/login`,sendData );
+      
+      if(response.status === 210) {
+        // reactLocalStorage.setObject("user", {
+        //   id: currentUser._id,
+        //   email: currentUser.email,
+        //   password: currentUser.password,
+        //   image: currentUser.image_url,
+        //   ernin_hour: currentUser.earning_hour,
+        // });
+        return navigate("/");
       } else {
         setStateError({
           state: true,
-          title: "Email or Password Incorrect !",
+          title: ErrorMessage.PasswordOrEmail,
         });
       }
     } catch (error) {
@@ -76,9 +76,9 @@ const SingIn = ({ handleSingUp }) => {
       } else {
         setStateError({
           state: true,
-          title: "Server not response !",
+          title: ErrorMessage.PasswordOrEmail,
         });
-        console.log("Error", error.message);
+       
       }
     } finally {
       setLoading(false);

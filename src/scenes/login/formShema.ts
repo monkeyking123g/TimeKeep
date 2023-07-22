@@ -1,6 +1,13 @@
 import * as yup from "yup";
 
-export const initialValues = {
+export interface UserValues {
+  email: string;
+  password: string;
+  passwordConfirmation: string;
+  earningHour: string;
+}
+
+export const initialValues: UserValues = {
   email: "",
   password: "",
   passwordConfirmation: "",

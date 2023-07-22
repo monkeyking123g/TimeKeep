@@ -84,7 +84,7 @@ export const postMonth = async (newValuse) => {
 ////////////////// GET /////////////////////
 export const getTimeUser = async () => {
   const response = await Axios.get(
-    `${process.env.REACT_APP_DOMAIN}/api/user/${userCredensial.id}/time`,
+    `${process.env.REACT_APP_DOMAIN}/time-day/user/${userCredensial.id}`,
     config
   );
   return response;
