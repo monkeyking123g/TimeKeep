@@ -1,8 +1,8 @@
+import "dayjs/locale/it";
 import React from "react";
 import { Box, Typography, useTheme, Paper } from "@mui/material";
 import { useSelector } from 'react-redux';
 import Header from "../../components/Header";
-import { tokens } from "../../theme";
 import CircularIndeterminate from "../../components/Circular";
 import { useEffect, useState } from "react";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -13,10 +13,8 @@ import EuroOutlinedIcon from "@mui/icons-material/EuroOutlined";
 import LineChart from "../../components/LineChart";
 import StateBox from "../../components/StateBox";
 import ProgressCircle from "../../components/ProgressCircle";
-// import { reactLocalStorage } from "reactjs-localstorage";
 import Grid from '@mui/system/Unstable_Grid';
 import dayjs from "dayjs";
-import "dayjs/locale/it";
 import { loadData } from "../../api";
 
 import {
@@ -25,12 +23,12 @@ import {
   totalHours,
 } from "../../components/myUseFuncrion";
 
+// @ts-ignore
 import AnimatedNumber from "animated-number-react";
 import { motion } from "framer-motion";
 import styled from '@mui/system/styled';
 
 const Item = styled(Paper)(({ theme }) => ({
-  // backgroundColor: colors.secondary[500],
   display: "flex",
   alignItems : "center",
   justifyContent : "center",
@@ -39,7 +37,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const Dashboard = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [loading, setLoading] = useState(false);
 
@@ -69,7 +66,6 @@ const Dashboard = () => {
     setData();
   }, []);
 
-  //  Calcolate data from Dashboard
   const percentMonth = precisionRound(
     percentage(totalMonth, totalMonthHours),
     1
@@ -111,15 +107,15 @@ const Dashboard = () => {
 
       <Grid container spacing={2} >
       <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item>
+          <Item elevation={6} >
               <StateBox
                 title={totalMonth}
                 subtitle="Sum by Month"
                 process={totalMonth}
                 increase={`+${percentMonth}%`}
                 icon={
-                  <AccessTimeOutlinedIcon color='success'
-                    // sx={{ color: colors.greenAccent[500], fontSize: "26px" }}
+                  <AccessTimeOutlinedIcon  color="secondary"
+                  sx={{ fontSize: "26px" }}
                   />
                 }
               />
@@ -134,8 +130,8 @@ const Dashboard = () => {
                 increase={`+${percentErnMonth}%`}
                 icon={
             
-                  <PointOfSale
-                    // sx={{ color: colors.greenAccent[500], fontSize: "26px" }}
+                  <PointOfSale 
+                    sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
                   />
                 }
               />
@@ -149,9 +145,7 @@ const Dashboard = () => {
               process={percentYear}
               increase={`+${percentYear}%`}
               icon={
-          
-                <AccessTimeFilledOutlinedIcon
-                  // sx={{ color: colors.greenAccent[500], fontSize: "26px" }}
+                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.secondary.main,  fontSize: "26px" }}
                 />
               }
             />
@@ -165,9 +159,8 @@ const Dashboard = () => {
               process={50}
               increase="+50%"
               icon={
-          
-                <EuroOutlinedIcon
-                  // sx={{ color: colors.greenAccent[500], fontSize: "26px" }}
+                <EuroOutlinedIcon 
+                  sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
                 />
               }
             />
@@ -188,14 +181,14 @@ const Dashboard = () => {
         
               <ProgressCircle
                 size="125"
-                // progressColor={colors.greenAccent[500]}
+                progressColor={theme.palette.secondary.main}
                 progress={percentErnYear}
                 // colorBg={colors.primary[100]}
               />
         
               <Typography
                 variant="h5"
-                // color={colors.greenAccent[500]}
+                color="success"
                 sx={{
                   mt: "15px",
                 }}
@@ -260,7 +253,7 @@ const Dashboard = () => {
               </Box>
         
               <Box 
-              // color={colors.pink[500]} 
+              color="primary" 
               fontSize="16px">
                 {`${trasaction.start.slice(0, 5)} - ${trasaction.end.slice(
                   0,
@@ -272,7 +265,7 @@ const Dashboard = () => {
                 p="5px 10px"
                 borderRadius="4px"
                 fontSize="16px"
-                // color={colors.greenAccent[500]}
+                color="success"
                 width="70px"
               >
                 {trasaction.total.toFixed(1)}
@@ -301,7 +294,7 @@ const Dashboard = () => {
                 <Typography
                   variant="h3"
                   fontWeight="500"
-                  // color={colors.greenAccent[500]}
+                  color="success"
                 >
                   Months sum of the year.
                 </Typography>

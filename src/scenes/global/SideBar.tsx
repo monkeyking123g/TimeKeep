@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { tokens } from "../../theme";
 import { reactLocalStorage } from "reactjs-localstorage";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EventIcon from "@mui/icons-material/Event";
@@ -13,6 +12,7 @@ import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useSelector } from 'react-redux';
+import { grey } from '@mui/material/colors';
 
 interface MenuItems {
   title: string;
@@ -74,7 +74,7 @@ const Item = ({
       active={selected === title}
       onClick={() => {
         reactLocalStorage.setObject("icon", { select: title });
-        // setSelected(reactLocalStorage.getObject("icon").select);
+        setSelected(title);
       }}
       icon={icon}
       component={<Link to={to} />}
@@ -85,8 +85,7 @@ const Item = ({
 };
 
 const SideBar = ({ shadow = false }) => {
-  // const theme = useTheme();
-  // const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const user = useSelector((state: any) => state.user);
   const { collapseSidebar } = useProSidebar();
@@ -102,10 +101,10 @@ const SideBar = ({ shadow = false }) => {
     }: any) => {
       if (level === 0)
         return {
-          // color: active ? colors.pink[500] : colors.textColor[100],
-          // backgroundColor: active ? colors.secondary[500] : undefined,
+          color: active ? theme.palette.primary.main : theme.palette.text.primary,
+          backgroundColor: active && theme.palette.primaryGreen.main,
           "&:hover": {
-            backgroundColor: "#2c2c2c",
+            backgroundColor: theme.palette.primaryGreen.main,
           },
         };
     },
@@ -126,13 +125,13 @@ const SideBar = ({ shadow = false }) => {
         border: "0",
         ".sidebar": {
           border: "0",
-          // boxShadow: `1px 0 0 0 ${colors.grey[800]}`,
+          boxShadow: `1px 0 0 0 ${grey[800]}`,
         },
       }}
     >
       <Sidebar
         breakPoint={isNonMobile ? "lg" : "always"}
-        // backgroundColor={colors.secondary[500]}
+        backgroundColor={theme.palette.primaryGreen.main}
         rootStyles={{
           border: "none",
         }}
@@ -161,7 +160,6 @@ const SideBar = ({ shadow = false }) => {
             <MenuItem
               style={{
                 margin: "10px 0 20px 0",
-                // color: colors.primary[100],
               }}
             >
               <Box
@@ -170,7 +168,7 @@ const SideBar = ({ shadow = false }) => {
                 alignItems="center"
               >
                 <Typography variant="h3" 
-                // color={colors.primary[700]}
+                color={grey[400]}
                 >
                   ADMINIS
                 </Typography>
@@ -202,14 +200,13 @@ const SideBar = ({ shadow = false }) => {
               <Box textAlign="center">
                 <Typography
                   variant="h5"
-                  // color={colors.primary[700]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
                   {user.email}
                 </Typography>
                 <Typography variant="h5" 
-                // color={colors.greenAccent[500]}
+                  color={theme.palette.primary.main}
                 >
                   VP Chef
                 </Typography>
@@ -229,7 +226,7 @@ const SideBar = ({ shadow = false }) => {
                   {index % 3 === 0 && ( 
                     <Typography
                       variant="h6"
-                      // color={colors.grey[400]}
+                      color={grey[400]}
                       sx={{ m: "15px 0 5px 20px" }}
                     >
                       {index === 0 ? "Data" : index === 4 ? "Created" : "Charts"}

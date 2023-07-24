@@ -5,13 +5,12 @@ import { tokens } from "../../theme";
 
 interface IButtonProps {
   text: string;
-  bgColor?: string;
+  color?: any;
   onClick?: () => void
 }
 
-const UseButton: FC<IButtonProps> = ({ text, bgColor, ...otherProps }) => {
+const UseButton: FC<IButtonProps> = ({ text, ...otherProps }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const configButton = {
     ...otherProps,

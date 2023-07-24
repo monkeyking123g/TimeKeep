@@ -23,11 +23,6 @@ const CustomDataGrid = ({
 }: any) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const CastomeStyleDataGrid = useStyleDataGrid({
-    // primary: colors.pink[500],
-    // green: colors.greenAccent[500],
-    // background: colors.primary[100],
-  });
   const isNonMobile = useMediaQuery("(min-width:600px)");
   // const [selectionModel, setSelectionModel] = React.useState([]);
 
@@ -39,7 +34,7 @@ const CustomDataGrid = ({
         <GridToolbarDensitySelector />
         <GridToolbarExport />
         <IconButton sx={{ ml: "auto" }} onClick={onPurge}>
-          <DeleteIcon sx={{ color: colors.pink[500] }} />
+          <DeleteIcon  />
         </IconButton>
       </GridToolbarContainer>
     );
@@ -48,7 +43,6 @@ const CustomDataGrid = ({
     <Box
       m={isNonMobile ? "0 0 0 0" : "0"}
       height="75vh"
-      sx={CastomeStyleDataGrid.root}
     >
       <DataGrid
         rows={rows}
@@ -60,17 +54,6 @@ const CustomDataGrid = ({
         selectionModel={selectedRows}
         components={{ Toolbar: CustomToolbar, LoadingOverlay: LinearProgress }}
         loading
-        sx={{
-          "& .MuiDataGrid-cell:focus": {
-            outline: "0",
-          },
-          "& .MuiDataGrid-row.Mui-selected": {
-            backgroundColor: "#2c2c2c !important",
-          },
-          "& .MuiDataGrid-cell:focus-within": {
-            outline: "0",
-          },
-        }}
       />
     </Box>
   );

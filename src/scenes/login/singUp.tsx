@@ -125,8 +125,9 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
             ) : (
               <Box display="flex" p="20px" />
             )}
-            <Textfiled margin="normal" label="Email Address" name="email" />
+            <Textfiled color="secondary" margin="normal" label="Email Address" name="email" />
             <Textfiled
+              color="secondary"
               margin="normal"
               name="password"
               label="Password"
@@ -134,6 +135,7 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
               autoComplete="off"
             />
             <Textfiled
+              color="secondary"
               margin="normal"
               name="passwordConfirmation"
               label="Password Confirmation"
@@ -141,6 +143,7 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
               autoComplete="off"
             />
             <Textfiled
+              color="secondary"
               margin="normal"
               type="number"
               label="Salary to Hourly"
@@ -154,10 +157,11 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
               }}
             />
 
-            <UseButton text={"Sing Up"}  />
+            <UseButton color="secondary" text={"Sing Up"}  />
             <Grid container>
               <Grid item>
                 <ItemButton
+                  color="secondary"
                   type="submit"
                   onClick={() => handleSingIn()}
                 >

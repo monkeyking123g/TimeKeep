@@ -26,6 +26,7 @@ import Header from "../../components/Header";
 import { tokens } from "../../theme";
 import { reactLocalStorage } from "reactjs-localstorage";
 import { motion } from "framer-motion";
+// @ts-ignore
 import { CalendarApi } from "fullcalendar";
 
 interface TimeData {

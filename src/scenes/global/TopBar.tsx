@@ -10,17 +10,18 @@ import {
   IconButton, 
   useTheme
 } from '@mui/material';
-import { tokens } from "../../theme";
 import InputBase from "@mui/material/InputBase";
 import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Logo from "../../components/svg/logo";
 import { Search } from "@mui/icons-material";
+import { grey } from '@mui/material/colors';
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
 
-const Topbar: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => {
+const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false, colorMode }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const isNonMobile = useMediaQuery("(min-width:600px)"); 
   // const { toggleSidebar } = useProSidebar();
 
   const [seed, setSeed] = useState(1);
@@ -71,26 +72,33 @@ const Topbar: React.FC<{ shadow?: boolean }> = ({ shadow = false }) => {
         display={isNonMobile ? "flex" : "none"}
         borderRadius="4px"
         mr={"auto"}
-        // sx={{ border: `1px solid ${colors.grey[800]}` }}
+        sx={{ border: `1px solid ${grey[800]}` }}
       >
         
         <InputBase
-          // sx={{ ml: 2, flex: 1, color: colors.textColor[100] }}
+          sx={{ ml: 2, flex: 1,}}
           placeholder="search"
         ></InputBase>
       
         <IconButton
           type="button"
-          // sx={{
-          //   p: 1,
-          //   color: colors.primary[700],
-          //   backgroundColor: colors.secondary[500],
-          //   borderRadius: "0",
-          // }}
+          sx={{
+            p: 1,
+            color: grey[500],
+            backgroundColor: grey[800],
+            borderRadius: "0",
+          }}
         >  
         <Search />
         </IconButton>
       </Box>
+      <Box>
+        {theme.palette.mode} mode
+        <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+          {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
+        </IconButton>
+      </Box>
+      
       <Box display="flex">
         <Button size='large' onClick={() => setOpen(true)}>Logout</Button>
       </Box>

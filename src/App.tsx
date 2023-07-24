@@ -3,21 +3,17 @@ import { useState } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { reactLocalStorage } from "reactjs-localstorage";
-
-// Global components
+import { createTheme } from "@mui/material/styles";
 import Topbar from "./scenes/global/TopBar";
 import SideBar from "./scenes/global/SideBar";
-
 import { ProSidebarProvider } from "react-pro-sidebar";
-
-import { ColorModeContext, useMode } from "./theme";
 import AnimationRoutes from "./components/AnimationRoutes";
-import {theme} from "./test"
+import { getDesignTokens } from "./test"
+const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function App() {
-  const [ colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const [shadows, setShadows] = useState(false);
-
+  const colorMode = React.useContext(ColorModeContext);
   const [userCredensial, setUserCredensial] = useState(
     reactLocalStorage.getObject("user")
   );
@@ -39,27 +35,48 @@ function App() {
   }, [location]);
 
   return (
-    <ColorModeContext.Provider value={colorMode as any} > 
-      <ThemeProvider theme={theme} >
-        <CssBaseline />
+    <>
+      <CssBaseline />
         <ProSidebarProvider>
-          <div className="app">
-            <SideBar
-              // isSidebar={isSidebar}
-              shadow={shadows}
-              // credential={userCredensial}
-            />
-            <div className="wrapper">
-              <Topbar 
-              // setIsSidebar={setIsSidebar} 
-                shadow={shadows} />
-              <AnimationRoutes />
-            </div>
+        <div className="app">
+          <SideBar
+            // isSidebar={isSidebar}
+            shadow={shadows} />
+          <div className="wrapper">
+            <Topbar
+              colorMode={colorMode}
+              shadow={shadows} />
+            <AnimationRoutes />
           </div>
-        </ProSidebarProvider>
+        </div>
+      </ProSidebarProvider>
+    </>
+  );
+}
+
+
+export default function ToggleColorMode() {
+  const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
+  const colorMode = React.useMemo(
+    () => ({
+      toggleColorMode: () => {
+        setMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
+      },
+    }),
+    [],
+  );
+
+  const theme = React.useMemo(
+    () =>
+      createTheme(getDesignTokens(mode)),
+    [mode],
+  );
+
+  return (
+    <ColorModeContext.Provider value={colorMode}>
+      <ThemeProvider theme={theme}>
+        <App/>
       </ThemeProvider>
     </ColorModeContext.Provider>
   );
 }
-
-export default App;

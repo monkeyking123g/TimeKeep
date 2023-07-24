@@ -2,6 +2,7 @@ import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import ProgressCircle from "./ProgressCircle";
+// @ts-ignore
 import AnimatedNumber from "animated-number-react";
 
 interface StateBoxProps {
@@ -33,7 +34,7 @@ const StateBox: React.FC<StateBoxProps> = ({
           <Typography
           variant="h4"
             fontWeight="bold"
-            // sx={{ color: colors.greenAccent[500] }}
+            sx={{ color: theme.palette.secondary.main }}
           >
             <AnimatedNumber value={title} formatValue={formatValue} />
           </Typography>
@@ -42,7 +43,7 @@ const StateBox: React.FC<StateBoxProps> = ({
           <ProgressCircle
             progress={process}
             size="50"
-            // colorBg={colors.secondary[500]}
+            colorBg={theme.palette.background.paper}
           />
         </Box>
       </Box>
@@ -53,7 +54,7 @@ const StateBox: React.FC<StateBoxProps> = ({
         <Typography
           variant="h5"
           fontStyle="italic"
-          // sx={{ color: colors.primary[500] }}
+          sx={{ color: theme.palette.primary.main }}
         >
           {increase}
         </Typography>

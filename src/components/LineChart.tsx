@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import { getUserMonth } from "../api";
-
+import { grey } from '@mui/material/colors';
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import React from "react";
@@ -80,43 +80,43 @@ const LineChart: React.FC<{ isDashboard?: boolean }> = ({ isDashboard = false })
     <ResponsiveLine
       data={data}
       theme={{
-        background: colors.primary[100],
+        background: theme.palette.background.default,
         textColor: "#808080",
 
         axis: {
           domain: {
             line: {
-              stroke: colors.grey[100],
+              stroke: grey[100],
             },
           },
           legend: {
             text: {
-              fill: colors.grey[100],
+              fill: grey[100],
             },
           },
           ticks: {
             line: {
-              stroke: colors.greenAccent[500],
+              stroke: theme.palette.secondary.main,
               strokeWidth: 1,
             },
             text: {
-              fill: colors.grey[100],
+              fill: grey[100],
             },
           },
         },
         legends: {
           text: {
-            fill: colors.grey[100],
+            fill: grey[100],
           },
         },
         tooltip: {
           container: {
-            color: colors.primary[500],
+            color:  theme.palette.primary.main,
           },
         },
       }}
-      colors={isDashboard ? {datum: "color"}: {scheme: "nivo"}}
-      // colors={colors.greenAccent[400] as any}
+      // colors={isDashboard ? {datum: "color"}: {scheme: "nivo"}}
+      colors={theme.palette.secondary.main}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{

@@ -1,16 +1,14 @@
 import { useState } from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { Formik } from "formik";
 
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 
 import Header from "../../components/Header";
-import { tokens } from "../../theme";
 import { reactLocalStorage } from "reactjs-localstorage";
 import CustomizedSnackbars from "../../components/Alert";
 import CircularIndeterminate from "../../components/Circular";
-import { useStyledTextField } from "../../style";
 import { motion } from "framer-motion";
 import Textfiled from "../../components/FormsUI/Textfiled";
 import { initialValues, userSchema } from "./formShema";
@@ -20,8 +18,6 @@ import { postMonth } from "../../api";
 import React from "react";
 
 const FormMonth = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [loading, setLoading] = useState(false);
   const [monthValue, setMonthValue] = useState(dayjs(new Date()));
   const [createValue, setCreateValue] = useState(dayjs(new Date()));
@@ -33,10 +29,6 @@ const FormMonth = () => {
     title: "",
   });
 
-  const CustomTextField = useStyledTextField({
-    // color: colors.pink[500],
-    // globalColor: colors.grey[800],
-  });
 
   const handleFormSubmit = async (values: any, actions: any) => {
     setLoading(true);
@@ -88,7 +80,6 @@ const FormMonth = () => {
 
         <Header
           title="Sum by Month"
-          TitleColor={colors.pink[500]}
           subtitle="Created a New Sum by Month"
         />
 
@@ -117,7 +108,6 @@ const FormMonth = () => {
                 display="grid"
                 gap="30px"
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                sx={CustomTextField.root}
               >
                
                 <Textfiled

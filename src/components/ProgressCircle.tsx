@@ -1,22 +1,27 @@
 import React from "react";
 import { Box, useTheme } from "@mui/material";
-import { tokens } from "../theme";
 
-const ProgressCircle = ({
+interface ProgressCircleProps {
+  progress?: number;
+  size?: string | number;
+  colorBg?: string;
+  progressColor?: string
+}
+
+const ProgressCircle: React.FC<ProgressCircleProps> = ({
   progress = 0.75,
   size = "40",
-  colorBg
-}: any) => {
+  colorBg = "transparent"
+}) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const angle = Math.round((progress / 100) * 360);
   return (
     <Box
       sx={{
         background: `radial-gradient(${colorBg} 55%, transparent 56%),
-            conic-gradient(transparent 0deg ${angle}deg, ${colors.pink[800]} ${angle}deg 360deg),
-            ${colors.primary[500]}`,
+            conic-gradient(transparent 0deg ${angle}deg, ${theme.palette.primary.main} ${angle}deg 360deg),
+            ${theme.palette.primary.main}`,
         borderRadius: "50%",
         width: `${size}px`,
         height: `${size}px`,

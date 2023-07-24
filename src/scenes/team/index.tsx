@@ -12,16 +12,11 @@ import { motion } from "framer-motion";
 
 const Team = () => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [imageStatus, setImageStatus] = useState(false);
   const userCredensial: any = reactLocalStorage.getObject("user");
   const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${userCredensial.image}`;
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const CastomeStyleDataGrid = useStyleDataGrid({
-    // primary: colors.pink[500],
-    // green: colors.greenAccent[500],
-    // background: colors.primary[100],
-  });
+
 
   const CheckImage = async (path: any) => {
     try {
@@ -122,13 +117,13 @@ const Team = () => {
             p="5px"
             display="flex"
             justifyContent="center"
-            // backgroundColor={colors.greenAccent[500]}
+            bgcolor={theme.palette.secondary.main}
             borderRadius="4px"
           >
-            {/* <AdminPanelSettingsOutlined sx={{ color: colors.primary[100] }} /> */}
-            {/* <Typography color={colors.primary[100]} sx={{ ml: "5px" }}>
+            <AdminPanelSettingsOutlined  /> 
+             <Typography  sx={{ ml: "5px" }}>
               {access}
-            </Typography> */}
+            </Typography>
           </Box>
         );
       },
@@ -142,27 +137,18 @@ const Team = () => {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      //exit={{ opacity: 0 }}
+
       transition={{ duration: 0.3 }}
     >
       <Header title="Admin" subtitle="Menaging the Admin. " />
       <Box
         m={isNonMobile ? "40px 0 0 0" : "0"}
         height="75vh"
-        sx={CastomeStyleDataGrid.root}
       >
         <DataGrid
           disableColumnSelector
           rows={rows}
           columns={colums}
-          sx={{
-            "& .MuiDataGrid-cell:focus": {
-              outline: "0",
-            },
-            "& .MuiDataGrid-row.Mui-selected": {
-              backgroundColor: "#2c2c2c !important",
-            },
-          }}
         />
       </Box>
     </Box>

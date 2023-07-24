@@ -1,6 +1,5 @@
 import React from "react";
-import { useTheme } from "@mui/styles";
-import { tokens } from "../../theme";
+import { useTheme } from "@mui/material";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import Textfiled from "../FormsUI/Textfiled";
@@ -11,8 +10,8 @@ const DatePickerUse = ({
   name,
   ...otherProps
 }: any) => {
-  const theme: any = useTheme();
-  const colors = tokens(theme.palette.mode);
+  const theme = useTheme();
+
   const configDatePicker = {
     ...otherProps,
   };
@@ -29,7 +28,7 @@ const DatePickerUse = ({
             {...configTextfiled}
             sx={{
               gridColumn: "span 4",
-              // svg: { fill: colors.primary[500] },
+              svg: { fill: theme.palette.primary.main },
             }}
           />
         )}

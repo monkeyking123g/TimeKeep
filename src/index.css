@@ -1,14 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro:ital,wght@0,600;0,700;1,400&display=swap");
 html,
 body,
 #root,
 .app,
 .wrapper {
-  background: #212121;
   height: 100%;
   width: 100%;
-  /* overflow: hidden; */
-  font-family: "Source Sans Pro", sans-serif;
   overflow: hidden;
   scrollbar-width: thin;
 }
@@ -32,8 +28,6 @@ body,
 .app {
   position: relative;
   display: flex;
-  /* background: #212121; */
-  color: #fff;
 }
 .image-singUp {
   width: 60px;

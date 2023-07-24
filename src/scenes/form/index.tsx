@@ -4,8 +4,6 @@ import { Box, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../../components/Header";
 import CircularIndeterminate from "../../components/Circular";
-import { tokens } from "../../theme";
-import { useStyledTextField } from "../../style";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import moment from "moment";
@@ -20,18 +18,11 @@ import DatePickerUse from "../../components/DatePickerUI";
 import { initialValues, userSchema } from "./formShema";
 
 const Form = () => {
-  // const theme = useTheme();
-  // const colors = tokens(theme.palette.mode);
   const [loading, setLoading] = useState(false);
   const [stateSuccessfully, setStateSuccessfully] = useState({
     state: false,
     title: "",
   });
-
-  // const CustomTextField = useStyledTextField({
-  //   color: colors.pink[500],
-  //   globalColor: colors.grey[800],
-  // });
 
   const [value, setValue] = useState(dayjs(new Date()).format("YYYY-MM-DD"));
   const [userCredensial, setUserCredensial] = useState<any>(
@@ -95,10 +86,8 @@ const Form = () => {
        
         <Header
           title="Sum by Day "
-          // TitleColor={colors.pink[600]}
           subtitle="Created a New Time by Day"
         />
-       
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
 
@@ -126,7 +115,6 @@ const Form = () => {
                 display="grid"
                 gap="30px"
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                // sx={CustomTextField.root}
               >
                
                 <Textfiled
@@ -138,7 +126,7 @@ const Form = () => {
                   }}
                 />
                
-                {/* <DatePickerUse
+                <DatePickerUse
                   name={"dateCreated"}
                   label="Date Created"
                   onChange={(newValue: any) => {
@@ -149,7 +137,7 @@ const Form = () => {
                     );
                   }}
                   value={value}
-                /> */}
+                />
                
                 <Textfiled
                   type="time"
