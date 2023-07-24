@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Header from "../../components/Header";
 import CustomDataGrid from "../../components/DataGrid";
 import CircularIndeterminate from "../../components/Circular";
@@ -42,12 +42,12 @@ const Month = () => {
     setLoading(true);
     const loadData = async () => {
       try {
-        const newData = [];
+        const newData: any = [];
         const response = await getUserMonth();
 
         if (Array.isArray(response.data.data)) {
           let nam = 1;
-          response.data.data.forEach((el) => {
+          response.data.data.forEach((el: any) => {
             const updateData = {
               id: el._id,
               nam: nam,
@@ -73,11 +73,11 @@ const Month = () => {
     };
     loadData();
   }, []);
-  const handleSelectionChange = (selection) => {
+  const handleSelectionChange = (selection: any) => {
     setSelectedRows(selection);
   };
-  function removeObjectWithId(arr, id) {
-    const objWithIdIndex = arr.findIndex((obj) => obj.id === id);
+  function removeObjectWithId(arr: any, id: any) {
+    const objWithIdIndex = arr.findIndex((obj: any) => obj.id === id);
     if (objWithIdIndex > -1) {
       arr.splice(objWithIdIndex, 1);
     }
@@ -94,17 +94,19 @@ const Month = () => {
   };
 
   return (
+    
     <Box
       m="20px"
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.3 }}
-    >
+    > 
       <Box display="flex" justifyContent="space-between">
         <Header title="All Month" subtitle="List by Month created." />
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
+      
       <CustomDataGrid
         rows={rows}
         columns={colums}

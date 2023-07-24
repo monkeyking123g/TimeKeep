@@ -1,12 +1,10 @@
 
 import React, { useState } from 'react';
-import { Box, useTheme, Typography, Button, Grid, InputAdornment } from '@mui/material';
+import { Box, styled, Typography, Button, Grid, InputAdornment } from '@mui/material';
 import EuroOutlinedIcon from '@mui/icons-material/EuroOutlined';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { tokens } from '../../theme';
-import { useStyledTextField } from '../../style';
 import { reactLocalStorage } from 'reactjs-localstorage';
 import CircularIndeterminate from '../../components/Circular';
 import CustomizedSnackbars from '../../components/Alert';
@@ -30,28 +28,25 @@ enum ErrorMessage {
   ServerError = 'Server error. Please try again later.',
   ServerNotResponding = 'Server not responding. Please check your internet connection.',
 }
+
+const ItemButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(1)
+}));
 const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
   const [loading, setLoading] = useState<boolean>(false);
   const [stateError, setStateError] = useState<{ state: boolean; title: string }>({ state: false, title: "" });
 
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const CustomTextField = useStyledTextField({
-    color: colors.greenAccent[500],
-    globalColor: colors.grey[800],
-  });
 
   const handleFormSubmit = async (values: Values | any) : Promise<void> => {
     setLoading(true);
-    let image_url;
+    let image_url: string;
 
     if(imageUser) {
       try {
         const formData = new FormData();
         formData.append('image', imageUser);
         console.log(imageUser)
-  
         const response = await Axios.post( `${process.env.REACT_APP_DOMAIN}/uploads`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data'
@@ -119,7 +114,7 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
     >
       {({ handleSubmit }) => (
         <Box component="form" onSubmit={handleSubmit} noValidate>
-          <Box mt={1} sx={CustomTextField.root}>
+          <Box mt={1}>
             <CustomizedSnackbars
               SnackbarOpen={stateError}
               setSnackbarOpen={setStateError}
@@ -153,24 +148,21 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
-                    <EuroOutlinedIcon sx={{ color: colors.greenAccent[600] }} />
+                    <EuroOutlinedIcon />
                   </InputAdornment>
                 ),
               }}
             />
 
-            <UseButton text={"Sing Up"} bgColor={colors.greenAccent[500]} />
+            <UseButton text={"Sing Up"}  />
             <Grid container>
               <Grid item>
-                <Button
+                <ItemButton
                   type="submit"
                   onClick={() => handleSingIn()}
-                  sx={{
-                    ":hover": { backgroundColor: colors.greenAccent[800] },
-                  }}
                 >
-                  <Typography color={colors.primary[700]}>Sing In</Typography>
-                </Button>
+                  <Typography>Sing In</Typography>
+                </ItemButton>
               </Grid>
             </Grid>
           </Box>

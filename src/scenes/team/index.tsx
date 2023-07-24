@@ -1,11 +1,10 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../theme";
 import { AdminPanelSettingsOutlined } from "@mui/icons-material";
 import Header from "../../components/Header";
 import { reactLocalStorage } from "reactjs-localstorage";
-import { DataGrid } from "@mui/x-data-grid";
-// Style component
+import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useStyleDataGrid } from "../../style";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Axios from "axios";
@@ -15,16 +14,16 @@ const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [imageStatus, setImageStatus] = useState(false);
-  const userCredensial = reactLocalStorage.getObject("user");
+  const userCredensial: any = reactLocalStorage.getObject("user");
   const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${userCredensial.image}`;
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const CastomeStyleDataGrid = useStyleDataGrid({
-    primary: colors.pink[500],
-    green: colors.greenAccent[500],
-    background: colors.primary[100],
+    // primary: colors.pink[500],
+    // green: colors.greenAccent[500],
+    // background: colors.primary[100],
   });
 
-  const CheckImage = async (path) => {
+  const CheckImage = async (path: any) => {
     try {
       const respose = await Axios.get(path);
       if (respose.status === 200) {
@@ -55,7 +54,7 @@ const Team = () => {
     },
   ];
 
-  const colums = [
+  const colums: GridColDef[] = [
     {
       field: "image",
       headerName: "Image",
@@ -65,7 +64,6 @@ const Team = () => {
         return (
           <Box
             width="60%"
-            // m="0 auto"
             p="5px"
             display="flex"
             justifyContent="start"
@@ -114,7 +112,9 @@ const Team = () => {
       headerName: "Acces Level",
       flex: 0.5,
       minWidth: 150,
-      renderCell: ({ row: { access } }) => {
+      renderCell: ({
+        row: { access }
+      }: any) => {
         return (
           <Box
             width="60%"
@@ -122,13 +122,13 @@ const Team = () => {
             p="5px"
             display="flex"
             justifyContent="center"
-            backgroundColor={colors.greenAccent[500]}
+            // backgroundColor={colors.greenAccent[500]}
             borderRadius="4px"
           >
-            <AdminPanelSettingsOutlined sx={{ color: colors.primary[100] }} />
-            <Typography color={colors.primary[100]} sx={{ ml: "5px" }}>
+            {/* <AdminPanelSettingsOutlined sx={{ color: colors.primary[100] }} /> */}
+            {/* <Typography color={colors.primary[100]} sx={{ ml: "5px" }}>
               {access}
-            </Typography>
+            </Typography> */}
           </Box>
         );
       },
@@ -136,6 +136,7 @@ const Team = () => {
   ];
 
   return (
+  
     <Box
       m="20px"
       component={motion.div}

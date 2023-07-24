@@ -2,7 +2,10 @@ import React from "react";
 import { TextField } from "@mui/material";
 import { useField } from "formik";
 
-const Textfiled = ({ name, ...otherProps }) => {
+const Textfiled = ({
+  name,
+  ...otherProps
+}: any) => {
   const [field, mata] = useField(name);
 
   const configTextfiled = {

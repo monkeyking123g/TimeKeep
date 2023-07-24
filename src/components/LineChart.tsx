@@ -6,65 +6,42 @@ import { getUserMonth } from "../api";
 
 import dayjs from "dayjs";
 import "dayjs/locale/it";
+import React from "react";
 
-const Data = [
+interface DataPoint {
+  x: string;
+  y: number;
+}
+
+interface DataEntry {
+  id: string;
+  color: string;
+  data: DataPoint[];
+}
+
+const Data: DataEntry[] = [
   {
     id: `${dayjs().locale("it").year()}`,
     color: "#4cceac",
     data: [
-      {
-        x: "gennaio",
-        y: 0,
-      },
-      {
-        x: "febbraio",
-        y: 0,
-      },
-      {
-        x: "marzo",
-        y: 0,
-      },
-      {
-        x: "aprile",
-        y: 0,
-      },
-      {
-        x: "maggio",
-        y: 0,
-      },
-      {
-        x: "giugno",
-        y: 0,
-      },
-      {
-        x: "luglio",
-        y: 0,
-      },
-      {
-        x: "agosto",
-        y: 0,
-      },
-      {
-        x: "settembre",
-        y: 0,
-      },
-      {
-        x: "ottobre",
-        y: 0,
-      },
-      {
-        x: "novembre",
-        y: 0,
-      },
-      {
-        x: "dicembre",
-        y: 0,
-      },
+      { x: "gennaio", y: 0 },
+      { x: "febbraio", y: 0 },
+      { x: "marzo", y: 0 },
+      { x: "aprile", y: 0 },
+      { x: "maggio", y: 0 },
+      { x: "giugno", y: 0 },
+      { x: "luglio", y: 0 },
+      { x: "agosto", y: 0 },
+      { x: "settembre", y: 0 },
+      { x: "ottobre", y: 0 },
+      { x: "novembre", y: 0 },
+      { x: "dicembre", y: 0 },
     ],
   },
 ];
 
-const LineChart = ({ isDashboard = false }) => {
+
+const LineChart: React.FC<{ isDashboard?: boolean }> = ({ isDashboard = false }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
@@ -78,7 +55,7 @@ const LineChart = ({ isDashboard = false }) => {
           Data[0].data.forEach((month) => {
             const currentYear = dayjs().locale("it").year();
 
-            let ispresent = response.data.data.find((get) => {
+            let ispresent = response.data.data.find((get: any) => {
               const yearX = +get.month.match(/\d/g).join("");
               const monthX = get.month.replace(/\d+/g, "").trim();
 
@@ -138,8 +115,8 @@ const LineChart = ({ isDashboard = false }) => {
           },
         },
       }}
-      // colors={isDashboard ? {datum: "color"}: {scheme: "nivo"}}
-      colors={colors.greenAccent[400]}
+      colors={isDashboard ? {datum: "color"}: {scheme: "nivo"}}
+      // colors={colors.greenAccent[400] as any}
       margin={{ top: 50, right: 110, bottom: 50, left: 60 }}
       xScale={{ type: "point" }}
       yScale={{
@@ -161,7 +138,7 @@ const LineChart = ({ isDashboard = false }) => {
         legend: isDashboard ? undefined : "transportation",
         legendOffset: 36,
         legendPosition: "middle",
-      }}
+      } as any }
       axisLeft={{
         orient: "left",
         tickValues: 5,
@@ -171,7 +148,7 @@ const LineChart = ({ isDashboard = false }) => {
         legend: isDashboard ? undefined : "count",
         legendOffset: -40,
         legendPosition: "middle",
-      }}
+      } as any}
       enableGridX={false}
       enableGridY={false}
       enablePointLabel={true}

@@ -19,14 +19,14 @@ const CustomDataGrid = ({
   columns,
   onSelectionChange,
   onPurge,
-  selectedRows,
-}) => {
+  selectedRows
+}: any) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const CastomeStyleDataGrid = useStyleDataGrid({
-    primary: colors.pink[500],
-    green: colors.greenAccent[500],
-    background: colors.primary[100],
+    // primary: colors.pink[500],
+    // green: colors.greenAccent[500],
+    // background: colors.primary[100],
   });
   const isNonMobile = useMediaQuery("(min-width:600px)");
   // const [selectionModel, setSelectionModel] = React.useState([]);

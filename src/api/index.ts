@@ -3,7 +3,7 @@ import Axios from "axios";
 import "dayjs/locale/it";
 import { reactLocalStorage } from "reactjs-localstorage";
 
-const userCredensial = reactLocalStorage.getObject("user");
+const userCredensial: any  = reactLocalStorage.getObject("user");
 
 const config = {
   headers: {
@@ -24,7 +24,7 @@ export const loadData = async () => {
         const currentMonth = dayjs(new Date()).locale("it").format("MM");
         const currentYear = dayjs(new Date()).locale("it").format("YYYY");
 
-        const eventsMonth = response.data.data.filter((e) => {
+        const eventsMonth = response.data.data.filter((e: any) => {
           const dataFromUser = dayjs(e.dateCreated)
             .locale("it")
             .format("YYYY-MM-DD");
@@ -34,11 +34,11 @@ export const loadData = async () => {
         });
 
         let calcolateTotalMonth = 0;
-        await eventsMonth.forEach((element) => {
+        await eventsMonth.forEach((element: any) => {
           calcolateTotalMonth += element.total;
         });
 
-        const eventsYear = response.data.data.filter((e) => {
+        const eventsYear = response.data.data.filter((e: any) => {
           const dataFromUser = dayjs(e.dateCreated)
             .locale("it")
             .format("YYYY-MM-DD");
@@ -48,7 +48,7 @@ export const loadData = async () => {
         });
 
         let calcolatetotalYear = 0;
-        await eventsYear.forEach((element) => {
+        await eventsYear.forEach((element: any) => {
           calcolatetotalYear += element.total;
         });
         return { rows, calcolateTotalMonth, calcolatetotalYear };
@@ -64,7 +64,7 @@ export const loadData = async () => {
 };
 
 //////////////  POST  //////////////////////
-export const postTimes = async (values) => {
+export const postTimes = async (values: object) => {
   const post = await Axios.post(
     `${process.env.REACT_APP_DOMAIN}/api/user/times`,
     values,
@@ -72,7 +72,7 @@ export const postTimes = async (values) => {
   );
   return post;
 };
-export const postMonth = async (newValuse) => {
+export const postMonth = async (newValuse: object) => {
   const response = await Axios.post(
     `${process.env.REACT_APP_DOMAIN}/api/user/month`,
     newValuse,
@@ -84,6 +84,7 @@ export const postMonth = async (newValuse) => {
 ////////////////// GET /////////////////////
 export const getTimeUser = async () => {
   const response = await Axios.get(
+
     `${process.env.REACT_APP_DOMAIN}/time-day/user/${userCredensial.id}`,
     config
   );
@@ -91,6 +92,7 @@ export const getTimeUser = async () => {
 };
 export const getUserMonth = async () => {
   const response = await Axios.get(
+
     `${process.env.REACT_APP_DOMAIN}/api/user/${userCredensial.id}/month`,
     config
   );
@@ -98,9 +100,9 @@ export const getUserMonth = async () => {
 };
 
 ////////////// DELETE /////////////////
-export const deletMonth = async (id) => {
+export const deletMonth = async (id: string) => {
   await Axios.delete(`${process.env.REACT_APP_DOMAIN}/api/user/${id}/month`);
 };
-export const deletTime = async (id) => {
+export const deletTime = async (id: string) => {
   await Axios.delete(`${process.env.REACT_APP_DOMAIN}/api/user/${id}/month`);
 };

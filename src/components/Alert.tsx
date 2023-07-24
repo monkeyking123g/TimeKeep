@@ -1,15 +1,19 @@
-import { forwardRef } from "react";
+import React, { forwardRef } from "react";
 import Stack from "@mui/material/Stack";
 import { Typography } from "@mui/material";
 import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
+import MuiAlert, { AlertProps as MuiAlertProps } from "@mui/material/Alert";
 
-const Alert = forwardRef(function Alert(props, ref) {
+const Alert = React.forwardRef<HTMLDivElement, MuiAlertProps | any >(function Alert(props, ref) {
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-const CustomizedSnackbars = ({ SnackbarOpen, setSnackbarOpen, severity }) => {
-  const handleClose = (event, reason) => {
+const CustomizedSnackbars = ({
+  SnackbarOpen,
+  setSnackbarOpen,
+  severity
+}: any) => {
+  const handleClose = (event: any, reason: any): void => {
     if (reason === "clickaway") {
       return;
     }

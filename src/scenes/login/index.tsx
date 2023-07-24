@@ -1,25 +1,14 @@
 import React, { useState } from "react";
-// Componets
 import SingIn from "./singIn";
 import SingUn from './singUp';
-
 import CssBaseline from "@mui/material/CssBaseline";
-
-// Icons
 import Logo from "../../components/svg/logo";
-
 import Paper from "@mui/material/Paper";
-import { Box, useTheme, IconButton } from "@mui/material";
-
+import { Box,  IconButton } from "@mui/material";
 import Grid from "@mui/material/Grid";
-
 import Typography from "@mui/material/Typography";
-import { ThemeProvider } from "@mui/material/styles";
-import { tokens } from "../../theme";
 
 const SignInSide: React.FC = () => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
 
   const [clickSingUp, setClickSingUp] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | undefined>();
@@ -49,7 +38,7 @@ const SignInSide: React.FC = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
+    // <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
         <CssBaseline />
         <Grid
@@ -79,12 +68,7 @@ const SignInSide: React.FC = () => {
             }}
           >
             {clickSingUp ? (
-              <IconButton
-                // sx={{ color: colors.primary[100] }}
-                // variant="contained"
-                // type="submit"
-                // component="label"
-              >
+              <IconButton>
                 <img
                   src={
                     fileChange ||
@@ -116,7 +100,7 @@ const SignInSide: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+    // </ThemeProvider>
   );
 };
 export default SignInSide;

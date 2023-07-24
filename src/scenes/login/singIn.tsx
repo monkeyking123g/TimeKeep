@@ -1,44 +1,37 @@
-import React, { useState, useEffect } from "react";
-import { Box, useTheme, Typography, TextField, Button } from "@mui/material";
+import React, { useState } from "react";
+import { useDispatch } from 'react-redux';
+import { Box, Typography, TextField, Button, styled } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Checkbox from "@mui/material/Checkbox";
-import Grid from "@mui/material/Grid";
-import { tokens } from "../../theme";
 import Axios from "axios";
 import CustomizedSnackbars from "../../components/Alert";
-import { useStyledTextField } from "../../style";
 import CircularIndeterminate from "../../components/Circular";
-import { config } from "../../components/myUseFuncrion";
-import { reactLocalStorage } from "reactjs-localstorage";
 import UseButton from "../../components/ButtonUI/Button";
+import { setUser } from "../../userReducer"
+import { setAccessToken } from "../../tokenReducer"
+
+
 
 interface SingInProps {
   handleSingUp: () => void;
 }
+
 enum ErrorMessage {
   PasswordOrEmail = "Email or Password Incorrect !",
   ServerNotResponding = 'Server not responding. Please check your internet connection.',
 }
 
-const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode) as any;
-  const [loading, setLoading] = useState(false);
-  // const [authenticated, setAuthenticated] = useState(false);
-  const [stateError, setStateError] = useState<{ state: boolean; title: string }>({ state: false, title: "" });
+const ItemButton = styled(Button)(({ theme }) => ({
+  marginTop: theme.spacing(1)
+}));
 
-  const CustomTextField = useStyledTextField({
-    color: colors.pink[500],
-    globalColor: colors.grey[800],
-  });
+const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
+  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch()
+  const [stateError, setStateError] = useState<{ state: boolean; title: string }>({ state: false, title: "" });
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   if (authenticated) {
-  //     return navigate("/");
-  //   }
-  // }, [authenticated]);
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,18 +44,12 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
       email,
       password 
     }
-
     try {
       const response = await Axios.post(`${process.env.REACT_APP_DOMAIN}/auth/login`,sendData );
-      
-      if(response.status === 210) {
-        // reactLocalStorage.setObject("user", {
-        //   id: currentUser._id,
-        //   email: currentUser.email,
-        //   password: currentUser.password,
-        //   image: currentUser.image_url,
-        //   ernin_hour: currentUser.earning_hour,
-        // });
+      if(response.status === 200) {
+        dispatch(setAccessToken(response.data.access_token))
+        dispatch(setUser(response.data.user))
+        
         return navigate("/");
       } else {
         setStateError({
@@ -91,7 +78,6 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
       noValidate
       onSubmit={handleSubmit}
       mt={1}
-      sx={CustomTextField.root}
     >
       {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       <CustomizedSnackbars
@@ -122,17 +108,13 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
         control={<Checkbox value="remember" color="primary" />}
         label="Remember me"
       />
-      <UseButton text={"Sign In"}></UseButton>
+      <UseButton  text={"Sign In"}></UseButton>
 
-      <Grid container>
-        <Grid item>
-          <Button type="submit" onClick={() => handleSingUp()}>
-            <Typography color={colors.textColor[100]}>
+      <ItemButton type="submit" onClick={() => handleSingUp()}>
+            <Typography >
               Don't have an account? Sign Up
             </Typography>
-          </Button>
-        </Grid>
-      </Grid>
+      </ItemButton>
     </Box>
   );
 };

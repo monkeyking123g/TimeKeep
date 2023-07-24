@@ -6,11 +6,12 @@
         "module": "ES6",
         "jsx": "react",
         "moduleResolution": "node",
-        "noImplicitAny": true,
+        "noImplicitAny": false,
         "allowSyntheticDefaultImports": true,
         "allowJs": true
     },
     "exclude": [
         "dist"
     ]
+    
 }

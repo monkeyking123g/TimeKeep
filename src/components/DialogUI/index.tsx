@@ -1,8 +1,8 @@
-import { useState } from "react";
+import * as yup from "yup";
+import React, { useState } from "react";
 import { Dialog, useTheme, Typography } from "@mui/material";
 import UseButton from "../ButtonUI/Button";
 import { Formik } from "formik";
-import * as yup from "yup";
 
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -24,48 +24,52 @@ const userSchema = yup.object().shape({
   company: yup.string().required(),
 });
 
-const FormDialog = ({ clous, pull }) => {
+const FormDialog = ({
+  clous,
+  pull
+}: any) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [open, setOpen] = useState(true);
   const CustomTextField = useStyledTextField({
-    color: colors.greenAccent[500],
-    globalColor: colors.grey[800],
+    // color: colors.greenAccent[500],
+    // globalColor: colors.grey[800],
   });
 
   // const handleClickOpen = () => {
   //   setOpen(true);
   // };
 
-  const handleFormSubmit = (value) => {
+  const handleFormSubmit = (value: any) => {
     pull(value);
   };
 
-  return (
+  return (   
     <div>
-      <Dialog open={open} onClose={clous}>
-        <DialogTitle sx={{ backgroundColor: colors.secondary[500] }}>
+      
+      <Dialog open={open} onClose={clous}>        
+        {/* <DialogTitle sx={{ backgroundColor: colors.secondary[500] }}>         
           <Typography variant="h3">Created</Typography>
-        </DialogTitle>
+        </DialogTitle>        */}
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
           validationSchema={userSchema}
         >
-          {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit} style={{ width: "600px" }}>
+          {({ handleSubmit }) => (            
+            <form onSubmit={handleSubmit} style={{ width: "600px" }}> 
               <DialogContent
                 sx={{
-                  backgroundColor: colors.secondary[500],
+                  // backgroundColor: colors.secondary[500],
                   display: "flex",
                   flexDirection: "column",
                 }}
-              >
+              >                
                 <DialogContentText
-                  sx={{ backgroundColor: colors.secondary[500] }}
+                  // sx={{ backgroundColor: colors.secondary[500] }}
                 >
                   A New Time of Day.
-                </DialogContentText>
+                </DialogContentText>               
                 <Textfiled
                   margin="dense"
                   label="Company"
@@ -76,6 +80,7 @@ const FormDialog = ({ clous, pull }) => {
                   name="company"
                   sx={CustomTextField.root}
                 />
+                
                 <Textfiled
                   margin="dense"
                   label="From"
@@ -86,6 +91,7 @@ const FormDialog = ({ clous, pull }) => {
                   name="startHour"
                   sx={CustomTextField.root}
                 />
+                
                 <Textfiled
                   margin="dense"
                   label="At"
@@ -96,13 +102,15 @@ const FormDialog = ({ clous, pull }) => {
                   name="endHour"
                   sx={CustomTextField.root}
                 />
-              </DialogContent>
-              <DialogActions sx={{ backgroundColor: colors.secondary[500] }}>
+              </DialogContent>            
+              <DialogActions 
+              // sx={{ backgroundColor: colors.secondary[500] }}
+              >               
                 <UseButton
                   text={"Cancel"}
                   onClick={clous}
                   bgColor={"#cf6679"}
-                />
+                />               
                 <UseButton text={"Conferm"} />
               </DialogActions>
             </form>

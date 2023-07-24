@@ -2,17 +2,17 @@ import * as React from "react";
 import { motion } from "framer-motion";
 import { Button } from "@mui/material";
 
-const Path = (props) => (
-  <motion.path
-    fill="trasparent"
-    strokeWidth="3"
-    stroke="hsl(0, 0%, 100%)" //"hsl(0, 0%, 18%)"
-    strokeLinecap="round"
-    {...props}
-  />
-);
+const Path = (props: any) => <motion.path
+  fill="trasparent"
+  strokeWidth="3"
+  stroke="hsl(0, 0%, 100%)" //"hsl(0, 0%, 18%)"
+  strokeLinecap="round"
+  {...props}
+/>;
 
-export const MenuToggle = ({ toggle }) => (
+export const MenuToggle = ({
+  toggle
+}: any) => (
   <Button onClick={toggle} sx={{ minWidth: "0" }}>
     <svg width="23" height="23" viewBox="-1 -3 23 23">
       <Path

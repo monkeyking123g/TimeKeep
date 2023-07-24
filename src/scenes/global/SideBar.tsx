@@ -1,13 +1,10 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
-//import "react-pro-sidebar/dist/css/styles.css";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import { tokens } from "../../theme";
-import Axios from "axios";
 import { reactLocalStorage } from "reactjs-localstorage";
-// Icons
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EventIcon from "@mui/icons-material/Event";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -15,16 +12,69 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { MenuToggle } from "../../components/svg/MenuToggle";
-import { motion } from "framer-motion";
+import { useSelector } from 'react-redux';
 
-const Item = ({ title, to, icon, selected, setSelected }) => {
+interface MenuItems {
+  title: string;
+  to: string,
+  icon: React.ReactNode,
+}
+const menuItems: MenuItems[] = [
+  {
+    title: "Dashboard",
+    to: "/",
+    icon: <HomeOutlinedIcon />,
+  },
+  {
+    title: "Admin Meneging",
+    to: "/admin",
+    icon: <PeopleOutlinedIcon />,
+  },
+  {
+    title: "All Time",
+    to: "/allTime",
+    icon: <EventIcon />,
+  },
+  {
+    title: "All Month",
+    to: "/allMonth",
+    icon: <CalendarMonthIcon />,
+  },
+  {
+    title: "Sum by Day",
+    to: "/form",
+    icon: <EventIcon />,
+  },
+  {
+    title: "Sum by Month",
+    to: "/formMonth",
+    icon: <CalendarMonthIcon />,
+  },
+  {
+    title: "Calendar",
+    to: "/calendar",
+    icon: <CalendarTodayOutlinedIcon />,
+  },
+  {
+    title: "Line Chatt",
+    to: "/line",
+    icon: <TimelineOutlinedIcon />,
+  },
+];
+
+const Item = ({
+  title,
+  to,
+  icon,
+  selected,
+  setSelected
+}: any) => {
   return (
     <MenuItem
       active={selected === title}
       onClick={() => {
         reactLocalStorage.setObject("icon", { select: title });
-        setSelected(reactLocalStorage.getObject("icon").select);
+        // setSelected(reactLocalStorage.getObject("icon").select);
       }}
       icon={icon}
       component={<Link to={to} />}
@@ -35,45 +85,25 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
 };
 
 const SideBar = ({ shadow = false }) => {
-  const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-  const [imageStatus, setImageStatus] = useState(false);
+  // const theme = useTheme();
+  // const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const [userCredensial, setUserCredensial] = useState(
-    reactLocalStorage.getObject("user")
-  );
-  const [selected, setSelected] = useState(
-    reactLocalStorage.getObject("icon").select
-  );
-  //const [isCollapsed, setIsCollapsed] = useState(true);
-  const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${userCredensial.image}`;
+  const user = useSelector((state: any) => state.user);
   const { collapseSidebar } = useProSidebar();
   const { collapsed } = useProSidebar();
-
-  const CheckImage = async (path) => {
-    try {
-      const respose = await Axios.get(path);
-      if (respose.status === 200) {
-        setImageStatus(true);
-      } else {
-        setImageStatus(false);
-      }
-    } catch (error) {
-      if (error.response) {
-        console.log(error.response.status);
-      } else {
-        console.log("Error", error.message);
-      }
-    }
-  };
+  const [selected, setSelected] = useState<any>(
+    reactLocalStorage.getObject("icon")   
+  );
 
   const menuItemStyles = {
-    button: ({ level, active }) => {
-      // only apply styles on first level elements of the tree
+    button: ({
+      level,
+      active
+    }: any) => {
       if (level === 0)
         return {
-          color: active ? colors.pink[500] : colors.textColor[100],
-          backgroundColor: active ? colors.secondary[500] : undefined,
+          // color: active ? colors.pink[500] : colors.textColor[100],
+          // backgroundColor: active ? colors.secondary[500] : undefined,
           "&:hover": {
             backgroundColor: "#2c2c2c",
           },
@@ -81,22 +111,12 @@ const SideBar = ({ shadow = false }) => {
     },
   };
 
-  useEffect(() => {
-    CheckImage(pathImage);
-  }, []);
 
   useEffect(() => {
     if (!isNonMobile) {
       collapseSidebar(false);
     }
   }, [isNonMobile]);
-
-  useEffect(() => {
-    const user = reactLocalStorage.getObject("user");
-    if (userCredensial.id !== user.id) {
-      setUserCredensial({ ...user });
-    }
-  }, [reactLocalStorage.getObject("user")]);
 
   return (
     <Box
@@ -106,54 +126,55 @@ const SideBar = ({ shadow = false }) => {
         border: "0",
         ".sidebar": {
           border: "0",
-          boxShadow: `1px 0 0 0 ${colors.grey[800]}`,
+          // boxShadow: `1px 0 0 0 ${colors.grey[800]}`,
         },
       }}
     >
       <Sidebar
         breakPoint={isNonMobile ? "lg" : "always"}
-        backgroundColor={colors.secondary[500]}
+        // backgroundColor={colors.secondary[500]}
         rootStyles={{
           border: "none",
         }}
       >
-        <Menu iconshape="square" menuItemStyles={menuItemStyles}>
-          {/* LOGO AND MENU ICON */}
-          {isNonMobile ? (
+        <Menu  menuItemStyles={menuItemStyles}>
+          {/*  ? (
             <Box paddingLeft={collapsed ? "0" : "35%"}>
               <MenuItem
-                icon={
-                  <motion.div
-                    initial={false}
-                    animate={collapsed ? "closed" : "open"}
-                  >
-                    <MenuToggle
-                      toggle={() => {
-                        collapseSidebar();
-                      }}
-                    ></MenuToggle>
-                  </motion.div>
-                }
+                icon={<TimelineOutlinedIcon />}
+                  // <motion.div
+                  //   initial={false}
+                  //   animate={collapsed ? "closed" : "open"}
+                  // >
+                  //   <MenuToggle
+                  //     toggle={() => {
+                  //       collapseSidebar();
+                  //     }}
+                  //   ></MenuToggle>
+                  // </motion.div>
+               // }
               />
             </Box>
-          ) : undefined}
+          ) : undefined} */}
 
           {!collapsed && (
             <MenuItem
               style={{
                 margin: "10px 0 20px 0",
-                color: colors.primary[100],
+                // color: colors.primary[100],
               }}
             >
               <Box
                 display="flex"
                 justifyContent="center"
                 alignItems="center"
-                // ml="17px"
               >
-                <Typography variant="h3" color={colors.primary[700]}>
+                <Typography variant="h3" 
+                // color={colors.primary[700]}
+                >
                   ADMINIS
                 </Typography>
+              
               </Box>
             </MenuItem>
           )}
@@ -166,8 +187,8 @@ const SideBar = ({ shadow = false }) => {
                   width="100px"
                   height="100px"
                   src={
-                    imageStatus
-                      ? pathImage
+                    user.image_url
+                      ? `${process.env.REACT_APP_DOMAIN}/${user.image_url}`
                       : "https://www.3dproduction.it/public/no_attore.jpg?nocache="
                   }
                   style={{
@@ -181,98 +202,41 @@ const SideBar = ({ shadow = false }) => {
               <Box textAlign="center">
                 <Typography
                   variant="h5"
-                  color={colors.primary[700]}
+                  // color={colors.primary[700]}
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
-                  {userCredensial.email}
+                  {user.email}
                 </Typography>
-                <Typography variant="h5" color={colors.greenAccent[500]}>
+                <Typography variant="h5" 
+                // color={colors.greenAccent[500]}
+                >
                   VP Chef
                 </Typography>
               </Box>
             </Box>
           )}
-
-          {/* Menu items */}
           <Box paddingLeft={collapsed ? "0" : "10%"}>
-            <Item
-              title="Dashboard"
-              to="/"
-              icon={<HomeOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[400]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Data
-            </Typography>
-            <Item
-              title="Admin Meneging"
-              to="/admin"
-              icon={<PeopleOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="All Time"
-              to="/allTime"
-              icon={<EventIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="All Month"
-              to="/allMonth"
-              icon={<CalendarMonthIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[400]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Created
-            </Typography>
-            <Item
-              title="Sum by Day"
-              to="/form"
-              icon={<EventIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Sum by Month"
-              to="/formMonth"
-              icon={<CalendarMonthIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Calendar"
-              to="/calendar"
-              icon={<CalendarTodayOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Typography
-              variant="h6"
-              color={colors.grey[400]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Charts
-            </Typography>
-            <Item
-              title="Line Chatt"
-              to="/line"
-              icon={<TimelineOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
+            {menuItems.map((item, index) => (
+              <React.Fragment key={index}>
+                  <Item
+                    title={item.title}
+                    to={item.to}
+                    icon={item.icon}
+                    selected={selected}
+                    setSelected={setSelected}
+                  />
+                  {index % 3 === 0 && ( 
+                    <Typography
+                      variant="h6"
+                      // color={colors.grey[400]}
+                      sx={{ m: "15px 0 5px 20px" }}
+                    >
+                      {index === 0 ? "Data" : index === 4 ? "Created" : "Charts"}
+                    </Typography>
+                  )}
+              </React.Fragment>
+            ))}
           </Box>
         </Menu>
       </Sidebar>

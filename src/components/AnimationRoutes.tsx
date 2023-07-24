@@ -5,7 +5,6 @@ import ListTime from "../scenes/time";
 import Month from "../scenes/month";
 import Form from "../scenes/form";
 import Calendar from "../scenes/calendar";
-// import Bar from "./scenes/bar"
 import Line from "../scenes/line";
 import FormMonth from "../scenes/formMonth";
 import SingIn from "../scenes/login";
@@ -28,7 +27,7 @@ export default function AnimationRoutes() {
         <Route path="/formMonth" element={<FormMonth />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/line" element={<Line />} />
-        <Route replace path="/singin" element={<SingIn />} />
+        <Route path="/singin" element={<SingIn />} />
       </Routes>
     </AnimatePresence>
   );

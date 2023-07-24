@@ -1,3 +1,4 @@
+import React from "react";
 import { Box } from "@mui/material";
 import Header from "../../components/Header";
 import LineChart from "../../components/LineChart";
@@ -13,7 +14,6 @@ const Line = () => {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      // exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
       sx={
         isNonMobile
@@ -25,7 +25,7 @@ const Line = () => {
             }
       }
     >
-      <Box display="flex" justifyContent="space-between">
+      <Box display="flex" justifyContent="space-between"> 
         <Header title="Line Chart" subtitle="Simple Line Chart" />
       </Box>
       <Box

@@ -1,6 +1,9 @@
 import React from "react";
 import { motion } from "framer-motion";
-const Logo = ({ width, height }) => {
+const Logo = ({
+  width,
+  height
+}: any) => {
   const icon = {
     hidden: {
       pathLength: 0,

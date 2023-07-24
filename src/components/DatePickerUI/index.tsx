@@ -7,8 +7,11 @@ import Textfiled from "../FormsUI/Textfiled";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import "dayjs/locale/it";
 
-const DatePickerUse = ({ name, ...otherProps }) => {
-  const theme = useTheme();
+const DatePickerUse = ({
+  name,
+  ...otherProps
+}: any) => {
+  const theme: any = useTheme();
   const colors = tokens(theme.palette.mode);
   const configDatePicker = {
     ...otherProps,
@@ -26,7 +29,7 @@ const DatePickerUse = ({ name, ...otherProps }) => {
             {...configTextfiled}
             sx={{
               gridColumn: "span 4",
-              svg: { fill: colors.primary[500] },
+              // svg: { fill: colors.primary[500] },
             }}
           />
         )}

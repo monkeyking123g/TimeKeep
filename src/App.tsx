@@ -12,9 +12,9 @@ import { ProSidebarProvider } from "react-pro-sidebar";
 
 import { ColorModeContext, useMode } from "./theme";
 import AnimationRoutes from "./components/AnimationRoutes";
-
+import {theme} from "./test"
 function App() {
-  const [theme, colorMode] = useMode();
+  const [ colorMode] = useMode();
   const [isSidebar, setIsSidebar] = useState(true);
   const [shadows, setShadows] = useState(false);
 
@@ -39,18 +39,20 @@ function App() {
   }, [location]);
 
   return (
-    <ColorModeContext.Provider value={colorMode}>
-      <ThemeProvider theme={theme}>
+    <ColorModeContext.Provider value={colorMode as any} > 
+      <ThemeProvider theme={theme} >
         <CssBaseline />
         <ProSidebarProvider>
           <div className="app">
             <SideBar
-              isSidebar={isSidebar}
+              // isSidebar={isSidebar}
               shadow={shadows}
-              credential={userCredensial}
+              // credential={userCredensial}
             />
             <div className="wrapper">
-              <Topbar setIsSidebar={setIsSidebar} shadow={shadows} />
+              <Topbar 
+              // setIsSidebar={setIsSidebar} 
+                shadow={shadows} />
               <AnimationRoutes />
             </div>
           </div>

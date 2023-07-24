@@ -6,12 +6,10 @@ import dayjs from "dayjs";
 import "dayjs/locale/it";
 
 import Header from "../../components/Header";
-//import useMediaQuery from "@mui/material/useMediaQuery";
 import { tokens } from "../../theme";
 import { reactLocalStorage } from "reactjs-localstorage";
 import CustomizedSnackbars from "../../components/Alert";
 import CircularIndeterminate from "../../components/Circular";
-// my style
 import { useStyledTextField } from "../../style";
 import { motion } from "framer-motion";
 import Textfiled from "../../components/FormsUI/Textfiled";
@@ -19,16 +17,15 @@ import { initialValues, userSchema } from "./formShema";
 import UseButton from "../../components/ButtonUI/Button";
 import DatePickerUse from "../../components/DatePickerUI";
 import { postMonth } from "../../api";
+import React from "react";
 
 const FormMonth = () => {
-  //const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [loading, setLoading] = useState(false);
-  // date piker UseState
   const [monthValue, setMonthValue] = useState(dayjs(new Date()));
   const [createValue, setCreateValue] = useState(dayjs(new Date()));
-  const [userCredensial, setUserCredensial] = useState(
+  const [userCredensial, setUserCredensial] = useState<any>(
     reactLocalStorage.getObject("user")
   );
   const [stateSuccessfully, setStateSuccessfully] = useState({
@@ -37,11 +34,11 @@ const FormMonth = () => {
   });
 
   const CustomTextField = useStyledTextField({
-    color: colors.pink[500],
-    globalColor: colors.grey[800],
+    // color: colors.pink[500],
+    // globalColor: colors.grey[800],
   });
 
-  const handleFormSubmit = async (values, actions) => {
+  const handleFormSubmit = async (values: any, actions: any) => {
     setLoading(true);
     try {
       const newValuse = Object.assign(values, {
@@ -80,7 +77,6 @@ const FormMonth = () => {
       component={motion.div}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      // exit={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
     >
       <CustomizedSnackbars
@@ -89,11 +85,13 @@ const FormMonth = () => {
         severity="success"
       />
       <Box display="flex" justifyContent="center" mb="15px">
+
         <Header
           title="Sum by Month"
           TitleColor={colors.pink[500]}
           subtitle="Created a New Sum by Month"
         />
+
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
       <Formik
@@ -102,22 +100,26 @@ const FormMonth = () => {
         validationSchema={userSchema}
       >
         {({ handleSubmit, setFieldValue }) => (
+         
           <Box
             width="100%"
             height="75vh"
             display="flex"
             justifyContent="center"
           >
+           
             <form
               onSubmit={handleSubmit}
               style={{ marginTop: "30px", width: "700px" }}
             >
+             
               <Box
                 display="grid"
                 gap="30px"
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
                 sx={CustomTextField.root}
               >
+               
                 <Textfiled
                   type="number"
                   label="Total Time"
@@ -126,9 +128,10 @@ const FormMonth = () => {
                     gridColumn: "span 4",
                   }}
                 />
+                
                 <DatePickerUse
                   name="month"
-                  onChange={(newValue) => {
+                  onChange={(newValue: any) => {
                     setMonthValue(dayjs(newValue));
                     setFieldValue("month", dayjs(newValue).format("MMMM YYYY"));
                   }}
@@ -138,10 +141,11 @@ const FormMonth = () => {
                   label="Month"
                 />
 
+                
                 <DatePickerUse
                   name="dateCreated"
                   label="Date Created"
-                  onChange={(newValue) => {
+                  onChange={(newValue: any) => {
                     setCreateValue(dayjs(newValue));
                     setFieldValue(
                       "dateCreate",

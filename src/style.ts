@@ -1,4 +1,7 @@
-export const useStyledTextField = ({ color, globalColor }) => ({
+export const useStyledTextField = ({
+  color,
+  globalColor
+}: any) => ({
   root: {
     "& input:-webkit-autofill": {
       "-webkit-box-shadow": `0 0 0 30px ${globalColor} inset !important`,
@@ -53,7 +56,10 @@ export const useStyledTextField = ({ color, globalColor }) => ({
   },
 });
 
-export const useStyledButton = ({ color, hoverColor }) => ({
+export const useStyledButton = ({
+  color,
+  hoverColor
+}: any) => ({
   root: {
     backgroundColor: color,
     color: "#121212",
@@ -63,7 +69,11 @@ export const useStyledButton = ({ color, hoverColor }) => ({
   },
 });
 
-export const useStyleDataGrid = ({ primary, green, background }) => ({
+export const useStyleDataGrid = ({
+  primary,
+  green,
+  background
+}: any) => ({
   root: {
     "& .MuiDataGrid-row:hover": {
       backgroundColor: "#2c2c2c",
@@ -136,7 +146,12 @@ export const useStyleDataGrid = ({ primary, green, background }) => ({
   },
 });
 
-export const useStyleFullcalendar = ({ grey, green, primary, textColor }) => ({
+export const useStyleFullcalendar = ({
+  grey,
+  green,
+  primary,
+  textColor
+}: any) => ({
   root: {
     ".fc .fc-list-event:hover td": {
       backgroundColor: grey, //colors.grey[800],
