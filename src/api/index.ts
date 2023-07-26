@@ -1,9 +1,7 @@
 import dayjs from "dayjs";
 import Axios from "axios";
 import "dayjs/locale/it";
-import { reactLocalStorage } from "reactjs-localstorage";
 
-const userCredensial: any  = reactLocalStorage.getObject("user");
 
 const config = {
   headers: {
@@ -12,47 +10,34 @@ const config = {
   },
 };
 
-export const loadData = async () => {
+export const loadData = async (userId: string) => {
   try {
     const response = await Axios.get(
-      `${process.env.REACT_APP_DOMAIN}/api/user/${userCredensial.id}/time`,
+      `${process.env.REACT_APP_DOMAIN}/day/user/${userId}`,
       config
     );
-    if (Array.isArray(response.data.data)) {
-      if (response.data.data.length > 0) {
-        const rows = await response.data.data;
-        const currentMonth = dayjs(new Date()).locale("it").format("MM");
-        const currentYear = dayjs(new Date()).locale("it").format("YYYY");
-
-        const eventsMonth = response.data.data.filter((e: any) => {
-          const dataFromUser = dayjs(e.dateCreated)
-            .locale("it")
-            .format("YYYY-MM-DD");
-          var [year, month] = dataFromUser.split("-"); // Or, var month = e.date.split('-')[1];
-
-          return +currentMonth === +month && currentYear === year;
-        });
-
-        let calcolateTotalMonth = 0;
-        await eventsMonth.forEach((element: any) => {
-          calcolateTotalMonth += element.total;
-        });
-
-        const eventsYear = response.data.data.filter((e: any) => {
-          const dataFromUser = dayjs(e.dateCreated)
-            .locale("it")
-            .format("YYYY-MM-DD");
-
-          var [year] = dataFromUser.split("-"); // Or, var month = e.date.split('-')[1];
-          return currentYear === year;
-        });
-
-        let calcolatetotalYear = 0;
-        await eventsYear.forEach((element: any) => {
-          calcolatetotalYear += element.total;
-        });
-        return { rows, calcolateTotalMonth, calcolatetotalYear };
-      }
+   
+    if (Array.isArray(response.data) && response.data.length > 0) {
+      const currentMonth = dayjs().locale("it").format("MM");
+      const currentYear = dayjs().locale("it").format("YYYY");
+  
+      const eventsMonth = response.data.filter((e) => {
+        const { dateCreated } = e;
+        const [year, month] = dayjs(dateCreated).locale("it").format("YYYY-MM-DD").split("-");
+        return +currentMonth === +month && currentYear === year;
+      });
+  
+      const calculateTotalMonth = eventsMonth.reduce((total, element) => total + element.total, 0);
+  
+      const eventsYear = response.data.filter((e) => {
+        const { dateCreated } = e;
+        const [year] = dayjs(dateCreated).locale("it").format("YYYY-MM-DD").split("-");
+        return currentYear === year;
+      });
+  
+      const calculateTotalYear = eventsYear.reduce((total, element) => total + element.total, 0);
+  
+      return { rows: response.data, calculateTotalMonth, calculateTotalYear };
     }
   } catch (error) {
     if (error.response) {
@@ -60,13 +45,13 @@ export const loadData = async () => {
     } else {
       console.log("Error", error.message);
     }
-  }
+  } 
 };
 
-//////////////  POST  //////////////////////
+/****************  Post  ************************/ 
 export const postTimes = async (values: object) => {
   const post = await Axios.post(
-    `${process.env.REACT_APP_DOMAIN}/api/user/times`,
+    `${process.env.REACT_APP_DOMAIN}/day`,
     values,
     config
   );
@@ -74,35 +59,35 @@ export const postTimes = async (values: object) => {
 };
 export const postMonth = async (newValuse: object) => {
   const response = await Axios.post(
-    `${process.env.REACT_APP_DOMAIN}/api/user/month`,
+    `${process.env.REACT_APP_DOMAIN}/month`,
     newValuse,
     config
   );
   return response;
 };
 
-////////////////// GET /////////////////////
-export const getTimeUser = async () => {
+/****************  GET  ************************/  
+export const getUserTime = async (id: string) => {
   const response = await Axios.get(
 
-    `${process.env.REACT_APP_DOMAIN}/time-day/user/${userCredensial.id}`,
+    `${process.env.REACT_APP_DOMAIN}/day/user/${id}`,
     config
   );
   return response;
 };
-export const getUserMonth = async () => {
+export const getUserMonth = async (id: string) => {
   const response = await Axios.get(
 
-    `${process.env.REACT_APP_DOMAIN}/api/user/${userCredensial.id}/month`,
+    `${process.env.REACT_APP_DOMAIN}/month/user/${id}`,
     config
   );
   return response;
 };
 
-////////////// DELETE /////////////////
+/****************  DELETE  ************************/  
 export const deletMonth = async (id: string) => {
-  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/api/user/${id}/month`);
+  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/month/${id}`);
 };
 export const deletTime = async (id: string) => {
-  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/api/user/${id}/month`);
+  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/day/${id}`);
 };

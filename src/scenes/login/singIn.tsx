@@ -47,9 +47,10 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
     try {
       const response = await Axios.post(`${process.env.REACT_APP_DOMAIN}/auth/login`,sendData );
       if(response.status === 200) {
+        localStorage.setItem('user', JSON.stringify(response.data.user));
         dispatch(setAccessToken(response.data.access_token))
         dispatch(setUser(response.data.user))
-        
+      
         return navigate("/");
       } else {
         setStateError({

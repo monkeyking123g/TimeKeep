@@ -8,23 +8,6 @@ body,
   overflow: hidden;
   scrollbar-width: thin;
 }
-::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-/*  Track */
-::-webkit-scrollbar-track {
-  background: #292929;
-}
-/* Handle */
-::-webkit-scrollbar-thumb {
-  background: #777;
-}
-
-/* ::-webkit-scrollbar-track:hover{
-  background: #555;
-} */
-
 .app {
   position: relative;
   display: flex;

@@ -1,7 +1,6 @@
 import React, { FC  } from "react";
 import { Button, useTheme, Typography } from "@mui/material";
 import { motion } from "framer-motion";
-import { tokens } from "../../theme";
 
 interface IButtonProps {
   text: string;

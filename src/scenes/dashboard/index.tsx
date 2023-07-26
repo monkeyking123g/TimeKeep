@@ -39,13 +39,10 @@ const Dashboard = () => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [loading, setLoading] = useState(false);
-
   const user = useSelector((state: any) => state.user);
-
   const [rows, setRows] = useState([]);
   const [totalMonth, setTotalMonth] = useState(0);
   const [totalYear, setTotalYear] = useState(0);
-
   const totalMonthHours = totalHours().month;
   const totalYearHours = totalHours().year;
 
@@ -53,10 +50,10 @@ const Dashboard = () => {
     setLoading(true);
     const setData = async () => {
       try {
-        const response = await loadData();
+        const response = await loadData(user._id);
         setRows(response.rows);
-        setTotalMonth(response.calcolateTotalMonth);
-        setTotalYear(response.calcolatetotalYear);
+        setTotalMonth(response.calculateTotalMonth);
+        setTotalYear(response.calculateTotalYear);
       } catch (err) {
         console.log(err);
       } finally {
@@ -122,11 +119,11 @@ const Dashboard = () => {
           </Item>
       </Grid>
         <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item>
+          <Item elevation={6} >
             <StateBox
                 title={`${erninHourTotal} $`}
                 subtitle="Earning this Month"
-                process={percentErnMonth}
+                process={percentErnMonth || 0}
                 increase={`+${percentErnMonth}%`}
                 icon={
             
@@ -138,21 +135,20 @@ const Dashboard = () => {
           </Item>
         </Grid>
         <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item>
+          <Item elevation={6} >
             <StateBox
               title={totalYear}
               subtitle="Sum by Year"
-              process={percentYear}
+              process={percentYear || 0}
               increase={`+${percentYear}%`}
               icon={
-                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.secondary.main,  fontSize: "26px" }}
-                />
+                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.secondary.main,  fontSize: "26px" }} />
               }
             />
           </Item>
         </Grid>
         <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item>
+          <Item elevation={6} >
             <StateBox
               title={user.ernin_hour}
               subtitle="Salary to Hourly"
@@ -167,7 +163,7 @@ const Dashboard = () => {
           </Item>
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-          <Paper>
+          <Paper elevation={6} >
             <Typography variant="h5" fontWeight={600} color={"#808080"}>
               Campingn
             </Typography>
@@ -207,7 +203,7 @@ const Dashboard = () => {
 
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-        <Paper>
+        <Paper elevation={6} >
     
           <Box
             display="flex"

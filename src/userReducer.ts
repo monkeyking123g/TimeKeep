@@ -10,7 +10,9 @@ export interface UserState {
     _id: string 
 }
 
-const initialState: UserState = {
+const userDataFromLocalStorage: UserState | null = JSON.parse(localStorage.getItem('user'));
+
+const initialState: UserState = userDataFromLocalStorage || {
   createdAt: '',
   earning_hour: 0,
   email: "",

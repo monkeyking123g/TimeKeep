@@ -1,27 +1,23 @@
-import { Box } from "@mui/material";
+import { Box, Typography, List, ListItem, ListItemText, useTheme, Card, CardContent, CardActions, Button  } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import dayjs from "dayjs";
 import CircularIndeterminate from "../../components/Circular";
 import CustomDataGrid from "../../components/DataGrid";
-
+import { useSelector } from 'react-redux';
 import { motion } from "framer-motion";
-import { getTimeUser, deletTime } from "../../api";
+import { getUserTime, deletTime } from "../../api";
+import useMediaQuery from "@mui/material/useMediaQuery";
 
 interface TimeData {
-  _id: string;
+  id: string;
   company: string;
   start: string;
   end: string;
-  total: number;
+  total: string;
   dateCreated: string;
 }
 const colums = [
-  {
-    field: "nam",
-    headerName: "ID",
-    flex: 0.4,
-  },
   {
     field: "company",
     headerName: "Company",
@@ -66,29 +62,95 @@ const colums = [
     minWidth: 100,
   },
 ];
+interface EventItemProps {
+  event: TimeData;
+}
+const formatTotalHours = (total: string): string => {
+  const totalHours = parseFloat(total);
+  const hours = Math.floor(totalHours);
+  const minutes = Math.floor((totalHours - hours) * 60);
+  const seconds = Math.floor(((totalHours - hours) * 60 - minutes) * 60);
+  return `${hours}h ${minutes}m ${seconds}s`;
+};
+const EventItem: React.FC<EventItemProps> = ({ event }) => {
+  const theme = useTheme();
 
+  const formattedTotal = formatTotalHours(event.total);
+  return (
+    <Card sx={{ minWidth: 275, marginBottom: theme.spacing(1) }}>
+      <CardContent>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Company
+        </Typography>
+        <Typography variant="h6" component="div">
+          {event.company}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Start
+        </Typography>
+        <Typography variant="h6" component="div">
+          {event.start}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          End
+        </Typography>
+        <Typography variant="h6" component="div">
+          {event.end}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Total
+        </Typography>
+        <Typography variant="h6" component="div">
+          {formattedTotal}
+        </Typography>
+        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
+          Date created
+        </Typography>
+        <Typography variant="h6" component="div">
+          {event.dateCreated}
+        </Typography>
+      </CardContent>
+      {/* <CardActions>
+        <Button size="small">Learn More</Button>
+      </CardActions> */}
+    </Card>
+  
+  );
+};
 
+export function convertHoursToHMS(hours: number): string {
+  const totalSeconds = Math.round(hours * 3600); 
+  const hoursResult = Math.floor(totalSeconds / 3600); 
+  const minutesResult = Math.floor((totalSeconds % 3600) / 60); 
+  const secondsResult = totalSeconds % 60; 
+
+  const hoursStr = hoursResult > 0 ? `${hoursResult}h` : '';
+  const minutesStr = minutesResult > 0 ? `${minutesResult}m` : '';
+  const secondsStr = secondsResult > 0 ? `${secondsResult}s` : '';
+
+  return `${hoursStr} ${minutesStr} ${secondsStr}`.trim();
+}
 
 const ListTime: React.FC = () => {
   const [rows, setRows] = useState<TimeData[]>([]);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state: any) => state.user);
   const [error, setError] = useState<string | null>(null);
-
+  const isNonMobile = useMediaQuery("(min-width:600px)");
+  const theme = useTheme();
   useEffect(() => {
     setLoading(true);
     const loadData = async () => {
       try {
-        const response = await getTimeUser();
-
-        if (Array.isArray(response.data.data)) {
-          let nam = 1;
-          const newData: TimeData[] = response.data.data.map((el: any) => ({
-            _id: el._id,
+        const response = await getUserTime("64bbcfa859a75e3dd4312a97");
+        if (Array.isArray(response.data)) {
+          const newData: TimeData[] = response.data.map((el: any) => ({
+            id: el._id,
             company: el.company,
             start: el.start.slice(0, 5),
             end: el.end.slice(0, 5),
-            total: el.total,
+            total: formatTotalHours(el.total),
             dateCreated: dayjs(el.dateCreated).format("DD-MM-YYYY"),
           }));
           setRows(newData);
@@ -109,7 +171,7 @@ const ListTime: React.FC = () => {
   };
 
   const removeObjectWithId = (arr: TimeData[], id: string) => {
-    return arr.filter((item) => item._id !== id);
+    return arr.filter((item) => item.id !== id);
   };
 
   const handlePurge = async () => {
@@ -127,8 +189,45 @@ const ListTime: React.FC = () => {
       setLoading(false);
     }
   };
-  return (
+  const container = {
+    hidden: { opacity: 1, scale: 0 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      transition: {
+        delayChildren: 0.3,
+        staggerChildren: 0.2,
+      },
+    },
+  };
+
+  
+  return (<>
+  
     <Box
+    flex="1 1 20%"
+    p="15px"
+    borderRadius="4px"
+    display={isNonMobile && "none"}
+    
+  >
+   
+    <Typography variant="h5">All Time</Typography>
+    {loading ? (
+     
+      <CircularIndeterminate />
+    ) : (
+     
+      <List>
+      {rows.map((event) => (
+        <EventItem event={event} key={event.id} />
+      ))}
+    </List>
+    )}
+  </Box>
+  
+    <Box
+      display={!isNonMobile && "none"}
       m="20px"
       component={motion.div}
       initial={{ opacity: 0 }}
@@ -148,7 +247,7 @@ const ListTime: React.FC = () => {
         selectedRows={selectedRows}
       />
     </Box>
-  );
+    </>);
 };
 
 export default ListTime;

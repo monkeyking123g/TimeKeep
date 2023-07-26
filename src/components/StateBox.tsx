@@ -21,7 +21,6 @@ const StateBox: React.FC<StateBoxProps> = ({
   increase
 }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const formatValue = (title: number) => title.toFixed(2);
   return (
     

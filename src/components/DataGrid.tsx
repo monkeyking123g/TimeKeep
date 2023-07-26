@@ -10,8 +10,6 @@ import {
 import LinearProgress from "@mui/material/LinearProgress";
 import { Box, useTheme, IconButton } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
-import { useStyleDataGrid } from "../style";
-import { tokens } from "../theme";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const CustomDataGrid = ({
@@ -22,9 +20,8 @@ const CustomDataGrid = ({
   selectedRows
 }: any) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  // const [selectionModel, setSelectionModel] = React.useState([]);
+  const [selectionModel, setSelectionModel] = React.useState([]);
 
   function CustomToolbar() {
     return (
@@ -53,7 +50,7 @@ const CustomDataGrid = ({
         }}
         selectionModel={selectedRows}
         components={{ Toolbar: CustomToolbar, LoadingOverlay: LinearProgress }}
-        loading
+        // loading
       />
     </Box>
   );

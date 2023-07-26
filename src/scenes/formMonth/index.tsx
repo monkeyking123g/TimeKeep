@@ -1,12 +1,9 @@
 import { useState } from "react";
 import { Box } from "@mui/material";
 import { Formik } from "formik";
-
 import dayjs from "dayjs";
 import "dayjs/locale/it";
-
 import Header from "../../components/Header";
-import { reactLocalStorage } from "reactjs-localstorage";
 import CustomizedSnackbars from "../../components/Alert";
 import CircularIndeterminate from "../../components/Circular";
 import { motion } from "framer-motion";
@@ -16,15 +13,20 @@ import UseButton from "../../components/ButtonUI/Button";
 import DatePickerUse from "../../components/DatePickerUI";
 import { postMonth } from "../../api";
 import React from "react";
+import { useSelector } from 'react-redux';
 
+enum MessageType {
+  Success = "Successfully Created.",
+  ErrorNetwork = "A network error occurred. Please check your connection and try again.",
+  ServerError = "Sorry, there's an issue on our server. Please try again later.",
+  InvalidInput = "Oops! The data you entered is invalid. Please check and try again.",
+}
 const FormMonth = () => {
   const [loading, setLoading] = useState(false);
   const [monthValue, setMonthValue] = useState(dayjs(new Date()));
   const [createValue, setCreateValue] = useState(dayjs(new Date()));
-  const [userCredensial, setUserCredensial] = useState<any>(
-    reactLocalStorage.getObject("user")
-  );
-  const [stateSuccessfully, setStateSuccessfully] = useState({
+  const user = useSelector((state: any) => state.user);
+  const [state, setState] = useState({
     state: false,
     title: "",
   });
@@ -34,14 +36,14 @@ const FormMonth = () => {
     setLoading(true);
     try {
       const newValuse = Object.assign(values, {
-        owner: userCredensial.id,
+        owner: user._id,
       });
       const response = await postMonth(newValuse);
 
-      if (response.status === 200) {
-        setStateSuccessfully({
+      if (response.status === 201) {
+        setState({
           state: true,
-          title: "Successfully Created.",
+          title: MessageType.Success,
         });
         actions.setSubmitting(false);
         actions.resetForm({
@@ -55,9 +57,15 @@ const FormMonth = () => {
       }
     } catch (error) {
       if (error.response) {
-        console.log(error.response.status);
+        setState({
+          state: true,
+          title: MessageType.InvalidInput,
+        });
       } else {
-        console.log("Error", error.message);
+        setState({
+          state: true,
+          title: MessageType.ServerError,
+        });
       }
     } finally {
       setLoading(false);
@@ -72,8 +80,8 @@ const FormMonth = () => {
       transition={{ duration: 0.3 }}
     >
       <CustomizedSnackbars
-        SnackbarOpen={stateSuccessfully}
-        setSnackbarOpen={setStateSuccessfully}
+        SnackbarOpen={state}
+        setSnackbarOpen={setState}
         severity="success"
       />
       <Box display="flex" justifyContent="center" mb="15px">

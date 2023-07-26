@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Box, useTheme } from "@mui/material";
+import { Box } from "@mui/material";
 import { Formik } from "formik";
 import Header from "../../components/Header";
 import CircularIndeterminate from "../../components/Circular";
@@ -16,18 +16,24 @@ import { motion } from "framer-motion";
 import Textfiled from "../../components/FormsUI/Textfiled";
 import DatePickerUse from "../../components/DatePickerUI";
 import { initialValues, userSchema } from "./formShema";
+import { useSelector } from 'react-redux';
+
+enum MessageType {
+  Success = "Successfully Created.",
+  ErrorNetwork = "A network error occurred. Please check your connection and try again.",
+  ServerError = "Sorry, there's an issue on our server. Please try again later.",
+  InvalidInput = "Oops! The data you entered is invalid. Please check and try again.",
+}
 
 const Form = () => {
   const [loading, setLoading] = useState(false);
-  const [stateSuccessfully, setStateSuccessfully] = useState({
+  const user = useSelector((state: any) => state.user);
+  const [status, setStatus] = useState({
     state: false,
     title: "",
   });
 
   const [value, setValue] = useState(dayjs(new Date()).format("YYYY-MM-DD"));
-  const [userCredensial, setUserCredensial] = useState<any>(
-    reactLocalStorage.getObject("user")
-  );
 
   const handleFormSubmit = async (values: any, actions: any) => {
     setLoading(true);
@@ -40,12 +46,12 @@ const Form = () => {
 
       const newValuse = Object.assign(values, {
         total: precisionRound(hours, 2),
-        owner: userCredensial.id,
+        owner: user._id,
       });
       const response = await postTimes(newValuse);
 
-      if (response.status === 200) {
-        setStateSuccessfully({ state: true, title: "Successfully Created." });
+      if (response.status === 201) {
+        setStatus({ state: true, title: MessageType.Success });
         actions.setSubmitting(false);
         actions.resetForm({
           values: {
@@ -58,9 +64,9 @@ const Form = () => {
       }
     } catch (error) {
       if (error.response) {
-        console.log(error.response.status);
+        setStatus({ state: true, title: MessageType.InvalidInput });
       } else {
-        console.log("Error", error.message);
+        setStatus({ state: true, title: MessageType.ServerError });
       }
     } finally {
       setLoading(false);
@@ -77,8 +83,8 @@ const Form = () => {
     >
      
       <CustomizedSnackbars
-        SnackbarOpen={stateSuccessfully}
-        setSnackbarOpen={setStateSuccessfully}
+        SnackbarOpen={status}
+        setSnackbarOpen={setStatus}
         severity="success"
       />
      

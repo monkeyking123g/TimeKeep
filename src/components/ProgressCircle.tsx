@@ -19,7 +19,7 @@ const ProgressCircle: React.FC<ProgressCircleProps> = ({
   return (
     <Box
       sx={{
-        background: `radial-gradient(${colorBg} 55%, transparent 56%),
+        background: `radial-gradient(${theme.palette.primaryGreen.main} 55%, transparent 56%),
             conic-gradient(transparent 0deg ${angle}deg, ${theme.palette.primary.main} ${angle}deg 360deg),
             ${theme.palette.primary.main}`,
         borderRadius: "50%",

@@ -1,12 +1,12 @@
 import { ResponsiveLine } from "@nivo/line";
 import { useTheme } from "@mui/material";
-import { tokens } from "../theme";
 import { useEffect, useState } from "react";
 import { getUserMonth } from "../api";
 import { grey } from '@mui/material/colors';
 import dayjs from "dayjs";
 import "dayjs/locale/it";
 import React from "react";
+import { useSelector } from "react-redux";
 
 interface DataPoint {
   x: string;
@@ -43,19 +43,17 @@ const Data: DataEntry[] = [
 
 const LineChart: React.FC<{ isDashboard?: boolean }> = ({ isDashboard = false }) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
-
   const [data, setData] = useState([]);
-
+  const user = useSelector((state: any) => state.user);
   useEffect(() => {
     const loadData = async () => {
       try {
-        const response = await getUserMonth();
-        if (Array.isArray(response.data.data)) {
+        const response = await getUserMonth(user._id);
+        if (Array.isArray(response.data)) {
           Data[0].data.forEach((month) => {
             const currentYear = dayjs().locale("it").year();
 
-            let ispresent = response.data.data.find((get: any) => {
+            let ispresent = response.data.find((get: any) => {
               const yearX = +get.month.match(/\d/g).join("");
               const monthX = get.month.replace(/\d+/g, "").trim();
 
@@ -153,7 +151,7 @@ const LineChart: React.FC<{ isDashboard?: boolean }> = ({ isDashboard = false })
       enableGridY={false}
       enablePointLabel={true}
       pointSize={11}
-      pointColor={colors.greenAccent[500]}
+      // pointColor={colors.greenAccent[500]}
       pointBorderWidth={0}
       pointBorderColor={{ from: "serieColor", modifiers: [] }}
       pointLabelYOffset={-12}

@@ -23,7 +23,6 @@ function App() {
 
   React.useEffect(() => {
     if (JSON.stringify(userCredensial) === "{}") {
-      console.log("bag");
       return navigate("/singin");
     }
   }, [userCredensial]);

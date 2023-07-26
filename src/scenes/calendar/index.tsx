@@ -12,7 +12,7 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import dayjs from "dayjs";
 import moment from "moment";
 import Axios from "axios";
-import { getTimeUser, postTimes } from "../../api";
+import { getUserTime, postTimes } from "../../api";
 import {
   Box,
   List,
@@ -22,15 +22,15 @@ import {
   useTheme,
 } from "@mui/material";
 import { useStyleFullcalendar } from "../../style";
+import { useSelector } from 'react-redux';
 import Header from "../../components/Header";
 import { tokens } from "../../theme";
-import { reactLocalStorage } from "reactjs-localstorage";
 import { motion } from "framer-motion";
 // @ts-ignore
 import { CalendarApi } from "fullcalendar";
 
 interface TimeData {
-  _id: string;
+  id: string;
   company: string;
   startHour: string;
   endHour: string;
@@ -51,25 +51,25 @@ const Calendar: React.FC<CalendarProps>  = () => {
   const [open, setOpen] = useState(false);
   const [calendarApiGlobal, setCalendarApiGlobal] = useState<any>();
   const [data, setData] = useState([]);
-  const userCredensial: any = reactLocalStorage.getObject("user");
+  const user = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState(false);
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const styleCallendar = useStyleFullcalendar({
-    // grey: colors.grey[800],
-    // green: colors.greenAccent[500],
-    // primary: colors.primary[500],
-    // textColor: colors.textColor[100],
-  });
+  // const styleCallendar = useStyleFullcalendar({
+  //   // grey: colors.grey[800],
+  //   // green: colors.greenAccent[500],
+  //   // primary: colors.primary[500],
+  //   // textColor: colors.textColor[100],
+  // });
 
   /***************  useEffect ****************/ 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
       try {
-        const response = await getTimeUser();
+        const response = await getUserTime(user._id);
 
-        if (Array.isArray(response.data.data) && response.data.data.length > 0) {
-          const newData = response.data.data.map((element: any) => {
+        if (Array.isArray(response.data) && response.data.length > 0) {
+          const newData: any = response.data.map((element: any) => {
             return {
               id: element._id,
               title: `${element.start.slice(0, 5)} - ${element.end.slice(0, 5)}`,
@@ -78,7 +78,7 @@ const Calendar: React.FC<CalendarProps>  = () => {
             };
           });
           setHours(newData);
-          setData(response.data.data);
+          setData(response.data);
         }
       } catch (error) {
         if (error.response) {
@@ -96,8 +96,8 @@ const Calendar: React.FC<CalendarProps>  = () => {
 
   const dataReset = async () => {
     try {
-      const response = await getTimeUser();
-      setData(response.data.data);
+      const response = await getUserTime(user._id);
+      setData(response.data);
     } catch (error) {
       if (error.response) {
         console.log(error.response.status);
@@ -312,7 +312,7 @@ const Calendar: React.FC<CalendarProps>  = () => {
             // flex="1 1 100%"
             ml="15px"
             width={isNonMobile ? "none" : "600px"}
-            sx={styleCallendar.root}
+            // sx={styleCallendar.root}
           >          
             <FullCalendar
               height="75vh"

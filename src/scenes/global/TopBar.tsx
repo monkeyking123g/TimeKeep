@@ -57,7 +57,7 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
       justifyContent="space-between"
       p={2}
       sx={{
-        // backgroundColor: colors.primary[100],
+      // backgroundColor: theme.palette.mode  === 'light' && theme.palette.primary.main,
       }}
       >
       <IconButton

@@ -131,7 +131,7 @@ const SideBar = ({ shadow = false }) => {
     >
       <Sidebar
         breakPoint={isNonMobile ? "lg" : "always"}
-        backgroundColor={theme.palette.primaryGreen.main}
+        backgroundColor={theme.palette.mode  === 'light' ? theme.palette.primary.main : theme.palette.primaryGreen.main}
         rootStyles={{
           border: "none",
         }}

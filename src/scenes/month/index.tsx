@@ -5,7 +5,16 @@ import CustomDataGrid from "../../components/DataGrid";
 import CircularIndeterminate from "../../components/Circular";
 import { getUserMonth, deletMonth } from "../../api";
 import { motion } from "framer-motion";
+import { useSelector } from 'react-redux';
+import { convertHoursToHMS } from "../time/index"
 
+interface RowsData {
+  id: string,
+  nam: number,
+  month: string,
+  hours: number | string,
+  dateCreated: string,
+}
 const colums = [
   { field: "nam", headerName: "ID", flex: 0.5 },
   {
@@ -34,33 +43,30 @@ const colums = [
 ];
 
 const Month = () => {
-  const [rows, setRows] = useState([]);
+  const [rows, setRows] = useState<RowsData[]>([]);
   const [selectedRows, setSelectedRows] = useState([]);
   const [loading, setLoading] = useState(false);
+  const user = useSelector((state: any) => state.user);
 
   useEffect(() => {
     setLoading(true);
     const loadData = async () => {
       try {
-        const newData: any = [];
-        const response = await getUserMonth();
+        const response = await getUserMonth(user._id);
 
-        if (Array.isArray(response.data.data)) {
-          let nam = 1;
-          response.data.data.forEach((el: any) => {
-            const updateData = {
+        if (Array.isArray(response.data)) {
+          const newData: RowsData[] = response.data.map((el: any, index: number) => {
+            return {
               id: el._id,
-              nam: nam,
+              nam: index + 1, 
               month: el.month,
-              hours: el.total,
+              hours: convertHoursToHMS(el.total),
               dateCreated: new Date(el.dateCreated).toISOString().slice(0, 10),
             };
-            newData.push(updateData);
-            nam += 1;
           });
+          setRows(newData);
         }
 
-        setRows(newData);
       } catch (error) {
         if (error.response) {
           console.log(error.response.status);
@@ -76,7 +82,7 @@ const Month = () => {
   const handleSelectionChange = (selection: any) => {
     setSelectedRows(selection);
   };
-  function removeObjectWithId(arr: any, id: any) {
+  function removeObjectWithId(arr: any[], id: string) {
     const objWithIdIndex = arr.findIndex((obj: any) => obj.id === id);
     if (objWithIdIndex > -1) {
       arr.splice(objWithIdIndex, 1);
