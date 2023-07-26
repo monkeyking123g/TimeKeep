@@ -5,7 +5,6 @@ import EuroOutlinedIcon from '@mui/icons-material/EuroOutlined';
 import { Formik } from 'formik';
 import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
-import { reactLocalStorage } from 'reactjs-localstorage';
 import CircularIndeterminate from '../../components/Circular';
 import CustomizedSnackbars from '../../components/Alert';
 import { config } from '../../components/myUseFuncrion';
@@ -77,14 +76,7 @@ const SingUn: React.FC<SingUnProps> = ({ handleSingIn, imageUser }) => {
       );
 
       if (response.data && response.status === 201) {
-        reactLocalStorage.setObject("user", {
-          id: response.data._id,
-          email: response.data.email,
-          password: response.data.password,
-          image: response.data.image_url,
-          ernin_hour: response.data.earning_hour,
-        });
-
+        localStorage.setItem('user', JSON.stringify(response.data));
         return navigate("/");
           
       }

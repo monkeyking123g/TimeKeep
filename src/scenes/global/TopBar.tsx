@@ -15,14 +15,13 @@ import { useNavigate } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Logo from "../../components/svg/logo";
 import { Search } from "@mui/icons-material";
-import { grey } from '@mui/material/colors';
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-
+import { useProSidebar } from "react-pro-sidebar";
 const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false, colorMode }) => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)"); 
-  // const { toggleSidebar } = useProSidebar();
+  const { collapseSidebar } = useProSidebar();
 
   const [seed, setSeed] = useState(1);
   const reset = () => {
@@ -67,12 +66,12 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
 
         <Logo key={seed} width="50px" height="25px" />
       </IconButton>
-    
+      <Button onClick={() => collapseSidebar}> Test</Button>
       <Box
         display={isNonMobile ? "flex" : "none"}
         borderRadius="4px"
         mr={"auto"}
-        sx={{ border: `1px solid ${grey[800]}` }}
+        sx={{ border: `1px solid ${theme.palette.grey[800]}` }}
       >
         
         <InputBase
@@ -84,8 +83,8 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
           type="button"
           sx={{
             p: 1,
-            color: grey[500],
-            backgroundColor: grey[800],
+            color: theme.palette.grey[500],
+            backgroundColor: theme.palette.grey[800],
             borderRadius: "0",
           }}
         >  

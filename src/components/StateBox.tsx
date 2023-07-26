@@ -31,7 +31,7 @@ const StateBox: React.FC<StateBoxProps> = ({
         <Box>
           {icon}
           <Typography
-          variant="h4"
+            variant="h4"
             fontWeight="bold"
             sx={{ color: theme.palette.secondary.main }}
           >
@@ -42,12 +42,11 @@ const StateBox: React.FC<StateBoxProps> = ({
           <ProgressCircle
             progress={process}
             size="50"
-            colorBg={theme.palette.background.paper}
           />
         </Box>
       </Box>
       <Box display="flex" justifyContent="space-between">
-        <Typography variant="h5" sx={{ color: "#ddd" }}>
+        <Typography variant="h5" color='GrayText'>
           {subtitle}
         </Typography>
         <Typography

@@ -1,4 +1,4 @@
-import { Box, Typography, List, ListItem, ListItemText, useTheme, Card, CardContent, CardActions, Button  } from "@mui/material";
+import { Box, Typography, List,  useTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import Header from "../../components/Header";
 import dayjs from "dayjs";
@@ -8,14 +8,16 @@ import { useSelector } from 'react-redux';
 import { motion } from "framer-motion";
 import { getUserTime, deletTime } from "../../api";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import EventItem from "../../components/EventItem";
 
-interface TimeData {
+export interface TimeData {
   id: string;
   company: string;
   start: string;
   end: string;
   total: string;
   dateCreated: string;
+  [key: string]: string;
 }
 const colums = [
   {
@@ -62,61 +64,6 @@ const colums = [
     minWidth: 100,
   },
 ];
-interface EventItemProps {
-  event: TimeData;
-}
-const formatTotalHours = (total: string): string => {
-  const totalHours = parseFloat(total);
-  const hours = Math.floor(totalHours);
-  const minutes = Math.floor((totalHours - hours) * 60);
-  const seconds = Math.floor(((totalHours - hours) * 60 - minutes) * 60);
-  return `${hours}h ${minutes}m ${seconds}s`;
-};
-const EventItem: React.FC<EventItemProps> = ({ event }) => {
-  const theme = useTheme();
-
-  const formattedTotal = formatTotalHours(event.total);
-  return (
-    <Card sx={{ minWidth: 275, marginBottom: theme.spacing(1) }}>
-      <CardContent>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Company
-        </Typography>
-        <Typography variant="h6" component="div">
-          {event.company}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Start
-        </Typography>
-        <Typography variant="h6" component="div">
-          {event.start}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          End
-        </Typography>
-        <Typography variant="h6" component="div">
-          {event.end}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Total
-        </Typography>
-        <Typography variant="h6" component="div">
-          {formattedTotal}
-        </Typography>
-        <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
-          Date created
-        </Typography>
-        <Typography variant="h6" component="div">
-          {event.dateCreated}
-        </Typography>
-      </CardContent>
-      {/* <CardActions>
-        <Button size="small">Learn More</Button>
-      </CardActions> */}
-    </Card>
-  
-  );
-};
 
 export function convertHoursToHMS(hours: number): string {
   const totalSeconds = Math.round(hours * 3600); 
@@ -143,14 +90,14 @@ const ListTime: React.FC = () => {
     setLoading(true);
     const loadData = async () => {
       try {
-        const response = await getUserTime("64bbcfa859a75e3dd4312a97");
+        const response = await getUserTime(user._id);
         if (Array.isArray(response.data)) {
           const newData: TimeData[] = response.data.map((el: any) => ({
             id: el._id,
             company: el.company,
             start: el.start.slice(0, 5),
             end: el.end.slice(0, 5),
-            total: formatTotalHours(el.total),
+            total: convertHoursToHMS(el.total),
             dateCreated: dayjs(el.dateCreated).format("DD-MM-YYYY"),
           }));
           setRows(newData);
@@ -189,42 +136,27 @@ const ListTime: React.FC = () => {
       setLoading(false);
     }
   };
-  const container = {
-    hidden: { opacity: 1, scale: 0 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        delayChildren: 0.3,
-        staggerChildren: 0.2,
-      },
-    },
-  };
-
-  
   return (<>
   
     <Box
-    flex="1 1 20%"
-    p="15px"
-    borderRadius="4px"
-    display={isNonMobile && "none"}
+      flex="1 1 20%"
+      p="15px"
+      borderRadius="4px"
+      display={isNonMobile && "none"}
+      
+    >
     
-  >
-   
-    <Typography variant="h5">All Time</Typography>
-    {loading ? (
-     
-      <CircularIndeterminate />
-    ) : (
-     
-      <List>
-      {rows.map((event) => (
-        <EventItem event={event} key={event.id} />
-      ))}
-    </List>
-    )}
-  </Box>
+      <Typography variant="h5">All Time</Typography>
+      {loading ? (
+        <CircularIndeterminate />
+      ) : (
+        <List>
+          {rows.map((event) => (
+            <EventItem event={event} key={event.id} />
+          ))}
+        </List>
+      )}
+    </Box>
   
     <Box
       display={!isNonMobile && "none"}

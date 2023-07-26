@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import { tokens } from "../../theme";
 import { AdminPanelSettingsOutlined } from "@mui/icons-material";
 import Header from "../../components/Header";
-import { reactLocalStorage } from "reactjs-localstorage";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
-import { useStyleDataGrid } from "../../style";
+// import { useStyleDataGrid } from "../../style";
+import { useSelector } from 'react-redux';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Axios from "axios";
 import { motion } from "framer-motion";
@@ -13,8 +12,8 @@ import { motion } from "framer-motion";
 const Team = () => {
   const theme = useTheme();
   const [imageStatus, setImageStatus] = useState(false);
-  const userCredensial: any = reactLocalStorage.getObject("user");
-  const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${userCredensial.image}`;
+  const user = useSelector((state: any) => state.user);
+  const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${user.image_url}`;
   const isNonMobile = useMediaQuery("(min-width:600px)");
 
 
@@ -42,9 +41,9 @@ const Team = () => {
   const rows = [
     {
       id: 1,
-      image: userCredensial.image_url,
-      email: userCredensial.email,
-      earning_hour: userCredensial.ernin_hour,
+      image: user.image_url,
+      email: user.email,
+      earning_hour: user.ernin_hour,
       access: "admin",
     },
   ];

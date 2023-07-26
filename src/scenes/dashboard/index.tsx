@@ -16,7 +16,7 @@ import ProgressCircle from "../../components/ProgressCircle";
 import Grid from '@mui/system/Unstable_Grid';
 import dayjs from "dayjs";
 import { loadData } from "../../api";
-
+import { convertHoursToHMS } from "../time"
 import {
   percentage,
   precisionRound,
@@ -69,23 +69,22 @@ const Dashboard = () => {
   );
   const percentYear = precisionRound(percentage(totalYear, totalYearHours), 1);
   const erninHourTotal = precisionRound(
-    totalMonth * user.ernin_hour,
+    totalMonth * user.earning_hour,
     2
   );
   const erninHourYear = precisionRound(
-    totalYear * user.ernin_hour,
+    totalYear * user.earning_hour,
     2
   );
   const percentErnMonth = precisionRound(
-    percentage(erninHourTotal, totalMonthHours * user.ernin_hour),
+    percentage(erninHourTotal, totalMonthHours * user.earning_hour),
     1
   );
   const percentErnYear = precisionRound(
-    percentage(erninHourYear, totalYearHours * user.ernin_hour),
+    percentage(erninHourYear, totalYearHours * user.earning_hour, ),
     1
   );
   const formatValue = (erninHourYear: any) => erninHourYear.toFixed(2);
-  let i = 0;
   return (
     <Box
       m="20px"
@@ -111,8 +110,8 @@ const Dashboard = () => {
                 process={totalMonth}
                 increase={`+${percentMonth}%`}
                 icon={
-                  <AccessTimeOutlinedIcon  color="secondary"
-                  sx={{ fontSize: "26px" }}
+                  <AccessTimeOutlinedIcon 
+                  sx={{ fontSize: "26px" , color: theme.palette.grey[500] }}
                   />
                 }
               />
@@ -128,7 +127,7 @@ const Dashboard = () => {
                 icon={
             
                   <PointOfSale 
-                    sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
+                    sx={{ color:  theme.palette.grey[500], fontSize: "26px" }}
                   />
                 }
               />
@@ -142,7 +141,7 @@ const Dashboard = () => {
               process={percentYear || 0}
               increase={`+${percentYear}%`}
               icon={
-                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.secondary.main,  fontSize: "26px" }} />
+                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.grey[500],  fontSize: "26px" }} />
               }
             />
           </Item>
@@ -150,21 +149,23 @@ const Dashboard = () => {
         <Grid xs={12} sm={6} md={3} lg={3}>
           <Item elevation={6} >
             <StateBox
-              title={user.ernin_hour}
+              title={user.earning_hour}
               subtitle="Salary to Hourly"
               process={50}
               increase="+50%"
               icon={
                 <EuroOutlinedIcon 
-                  sx={{ color: theme.palette.secondary.main, fontSize: "26px" }}
+                  sx={{ color: theme.palette.grey[500], fontSize: "26px" }}
                 />
               }
             />
           </Item>
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-          <Paper elevation={6} >
-            <Typography variant="h5" fontWeight={600} color={"#808080"}>
+          <Paper elevation={6} sx={{ height: '250px'}} >
+            <Typography sx={{
+                  p: theme.spacing(1),
+              }} variant="h5" fontWeight={600} color='GrayText'>
               Campingn
             </Typography>
       
@@ -172,21 +173,19 @@ const Dashboard = () => {
               display="flex"
               flexDirection="column"
               alignItems="center"
-              mt="25px"
             >
         
               <ProgressCircle
                 size="125"
                 progressColor={theme.palette.secondary.main}
                 progress={percentErnYear}
-                // colorBg={colors.primary[100]}
               />
         
               <Typography
                 variant="h5"
                 color="success"
                 sx={{
-                  mt: "15px",
+                  mt: theme.spacing(1),
                 }}
               >
                 $&nbsp;
@@ -195,7 +194,7 @@ const Dashboard = () => {
                 &nbsp;Revenue gerated this year.
               </Typography>
         
-              <Typography color={"#808080"}>
+              <Typography color='GrayText'>
                 Inclides extra misc expenditures and cost
               </Typography>
             </Box>
@@ -203,79 +202,61 @@ const Dashboard = () => {
 
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-        <Paper elevation={6} >
-    
-          <Box
-            display="flex"
-            justifyContent="space-between"
-            alignItems="end"
-            // borderBottom={`2px solid ${colors.grey[800]}`}
-            // color={colors.textColor[200]}
-            p="15px"
-          >
-      
-            <Typography color={"#808080"} variant="h5" fontWeight={600}>
-              Last sum by day created
-            </Typography>
-          </Box>
-          {rows.slice(Math.max(rows.length - 8, 0)).map((trasaction) => (
-      
-            <Box
-              key={`${trasaction._id}`}
+        <Paper elevation={6}  >
+          <Typography sx={{ padding: theme.spacing(1)}} color='GrayText' variant="h5" fontWeight={600}>
+                Last sum by day created
+          </Typography>
+          <Box sx={{ height: '200px', overflow: 'auto' }}>
+            <Box 
               display="flex"
               justifyContent="space-between"
-              alignItems="center"
-              // borderBottom={`2px solid ${colors.grey[800]}`}
-              p="15px"
+              alignItems="end"
             >
-        
-              <Box>
-          
-                <Typography
-                  // color={colors.grey[600]}
-                  variant="h5"
-                  fontWeight={600}
-                >
-                  {++i}
-                </Typography>
-          
-                <Typography 
-                // color={colors.textColor[100]}
-                >
-                  {dayjs(trasaction.dateCreated)
-                    .locale("it")
-                    .format("DD-MM-YYYY")}
-                </Typography>
-              </Box>
-        
-              <Box 
-              color="primary" 
-              fontSize="16px">
-                {`${trasaction.start.slice(0, 5)} - ${trasaction.end.slice(
-                  0,
-                  5
-                )}`}
-              </Box>
+            </Box>
+            {rows.slice(Math.max(rows.length - 8, 0)).map((trasaction) => (
         
               <Box
-                p="5px 10px"
-                borderRadius="4px"
-                fontSize="16px"
-                color="success"
-                width="70px"
+                key={`${trasaction._id}`}
+                display="flex"
+                justifyContent='space-between '
+                alignItems="center"
+                p={theme.spacing(1)}
               >
-                {trasaction.total.toFixed(1)}
-                {" h."}
+                <Box>
+                  <Typography >
+                    {dayjs(trasaction.dateCreated)
+                      .locale("it")
+                      .format("DD-MM-YYYY")}
+                  </Typography>
+                </Box>
+          
+                <Box 
+                color="primary" 
+                fontSize="16px">
+                  {`${trasaction.start.slice(0, 5)} - ${trasaction.end.slice(
+                    0,
+                    5
+                  )}`}
+                </Box>
+          
+                <Box
+                  p="5px 10px"   
+                >
+                  <Typography color='secondary'>
+                    {convertHoursToHMS(trasaction.total)}
+                  </Typography>
+                </Box>
               </Box>
-            </Box>
-          ))}
+            ))}
+
+          </Box>
+          
         </Paper>
      
         </Grid>
         <Grid xs={12}>
               <Box
               mt={isNonMobile ? "0px" : "25px"}
-              p="0 30px"
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -283,14 +264,14 @@ const Dashboard = () => {
         
               <Box>
           
-                <Typography variant="h5" fontWeight="600" color={"#808080"}>
+                <Typography variant="h5" fontWeight="600" color='GrayText'>
                   Revenue Generated
                 </Typography>
           
                 <Typography
                   variant="h3"
                   fontWeight="500"
-                  color="success"
+                  color="secondary"
                 >
                   Months sum of the year.
                 </Typography>

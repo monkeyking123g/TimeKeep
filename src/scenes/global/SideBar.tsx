@@ -1,9 +1,8 @@
 import React from "react";
-import { useState, useEffect } from "react";
-import { Sidebar, Menu, MenuItem, useProSidebar } from "react-pro-sidebar";
+import { useState } from "react";
+import { Sidebar, Menu, MenuItem, useProSidebar, SidebarProps } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
-import { reactLocalStorage } from "reactjs-localstorage";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EventIcon from "@mui/icons-material/Event";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -61,7 +60,9 @@ const menuItems: MenuItems[] = [
     icon: <TimelineOutlinedIcon />,
   },
 ];
-
+interface CustomSidebarProps extends SidebarProps {
+  onBackdropClick: () => void;
+}
 const Item = ({
   title,
   to,
@@ -73,7 +74,7 @@ const Item = ({
     <MenuItem
       active={selected === title}
       onClick={() => {
-        reactLocalStorage.setObject("icon", { select: title });
+        // reactLocalStorage.setObject("icon", { select: title });
         setSelected(title);
       }}
       icon={icon}
@@ -90,9 +91,8 @@ const SideBar = ({ shadow = false }) => {
   const user = useSelector((state: any) => state.user);
   const { collapseSidebar } = useProSidebar();
   const { collapsed } = useProSidebar();
-  const [selected, setSelected] = useState<any>(
-    reactLocalStorage.getObject("icon")   
-  );
+  const [selected, setSelected] = useState<any>();
+  const [toggled, setToggled] = useState(false);
 
   const menuItemStyles = {
     button: ({
@@ -111,11 +111,11 @@ const SideBar = ({ shadow = false }) => {
   };
 
 
-  useEffect(() => {
-    if (!isNonMobile) {
-      collapseSidebar(false);
-    }
-  }, [isNonMobile]);
+  // useEffect(() => {
+  //   if (isNonMobile) {
+  //     collapseSidebar(false);
+  //   }
+  // }, [isNonMobile]);
 
   return (
     <Box
@@ -130,6 +130,9 @@ const SideBar = ({ shadow = false }) => {
       }}
     >
       <Sidebar
+
+        // onBackdropClick={() => setToggled(false)} 
+        // toggled={toggled}
         breakPoint={isNonMobile ? "lg" : "always"}
         backgroundColor={theme.palette.mode  === 'light' ? theme.palette.primary.main : theme.palette.primaryGreen.main}
         rootStyles={{
@@ -199,7 +202,7 @@ const SideBar = ({ shadow = false }) => {
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h5"
+                  variant='subtitle1'
                   fontWeight="bold"
                   sx={{ m: "10px 0 0 0" }}
                 >
