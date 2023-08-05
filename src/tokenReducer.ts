@@ -1,11 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface TokenState {
-    access_token: string  
+    access_token: string
+    toggle: boolean  
 }
 
 const initialState: TokenState  = {
-  access_token: ''
+  access_token: '',
+  toggle: true
 };
   
 
@@ -21,9 +23,13 @@ export const tokenSlice = createSlice({
     removeAccessToken: () => {
       return initialState;
     },
+    setToggle: (state) => {
+      state.toggle = !state.toggle; 
+    },
+   
   },
 })
 
-export const { setAccessToken, removeAccessToken } = tokenSlice.actions
+export const { setAccessToken, removeAccessToken, setToggle } = tokenSlice.actions
 
 export default tokenSlice.reducer

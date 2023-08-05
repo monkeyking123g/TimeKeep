@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { Sidebar, Menu, MenuItem, useProSidebar, SidebarProps } from "react-pro-sidebar";
+import { Sidebar, Menu, MenuItem, SidebarProps } from "react-pro-sidebar";
 import { Box, Typography, useTheme } from "@mui/material";
 import { Link } from "react-router-dom";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
@@ -10,8 +10,9 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useSelector } from 'react-redux';
 import { grey } from '@mui/material/colors';
+import { useDispatch, useSelector, } from 'react-redux';
+import { setToggle } from '../../tokenReducer';
 
 interface MenuItems {
   title: string;
@@ -60,9 +61,7 @@ const menuItems: MenuItems[] = [
     icon: <TimelineOutlinedIcon />,
   },
 ];
-interface CustomSidebarProps extends SidebarProps {
-  onBackdropClick: () => void;
-}
+
 const Item = ({
   title,
   to,
@@ -74,7 +73,6 @@ const Item = ({
     <MenuItem
       active={selected === title}
       onClick={() => {
-        // reactLocalStorage.setObject("icon", { select: title });
         setSelected(title);
       }}
       icon={icon}
@@ -85,14 +83,13 @@ const Item = ({
   );
 };
 
-const SideBar = ({ shadow = false }) => {
+const SideBar = () => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const user = useSelector((state: any) => state.user);
-  const { collapseSidebar } = useProSidebar();
-  const { collapsed } = useProSidebar();
   const [selected, setSelected] = useState<any>();
-  const [toggled, setToggled] = useState(false);
+  const toggle = useSelector((state: any) => state.token.toggle);
+  const dispatch = useDispatch();
 
   const menuItemStyles = {
     button: ({
@@ -110,17 +107,10 @@ const SideBar = ({ shadow = false }) => {
     },
   };
 
-
-  // useEffect(() => {
-  //   if (isNonMobile) {
-  //     collapseSidebar(false);
-  //   }
-  // }, [isNonMobile]);
-
   return (
     <Box
       sx={{
-        display: shadow ? "none" : "flex",
+        display: "flex",
         height: "100%",
         border: "0",
         ".sidebar": {
@@ -130,9 +120,8 @@ const SideBar = ({ shadow = false }) => {
       }}
     >
       <Sidebar
-
-        // onBackdropClick={() => setToggled(false)} 
-        // toggled={toggled}
+        onBackdropClick ={() => dispatch(setToggle())}
+        toggled={toggle}
         breakPoint={isNonMobile ? "lg" : "always"}
         backgroundColor={theme.palette.mode  === 'light' ? theme.palette.primary.main : theme.palette.primaryGreen.main}
         rootStyles={{
@@ -140,27 +129,8 @@ const SideBar = ({ shadow = false }) => {
         }}
       >
         <Menu  menuItemStyles={menuItemStyles}>
-          {/*  ? (
-            <Box paddingLeft={collapsed ? "0" : "35%"}>
-              <MenuItem
-                icon={<TimelineOutlinedIcon />}
-                  // <motion.div
-                  //   initial={false}
-                  //   animate={collapsed ? "closed" : "open"}
-                  // >
-                  //   <MenuToggle
-                  //     toggle={() => {
-                  //       collapseSidebar();
-                  //     }}
-                  //   ></MenuToggle>
-                  // </motion.div>
-               // }
-              />
-            </Box>
-          ) : undefined} */}
 
-          {!collapsed && (
-            <MenuItem
+          <MenuItem
               style={{
                 margin: "10px 0 20px 0",
               }}
@@ -177,11 +147,9 @@ const SideBar = ({ shadow = false }) => {
                 </Typography>
               
               </Box>
-            </MenuItem>
-          )}
-
-          {!collapsed && (
-            <Box mb={isNonMobile ? "25px" : "1px"}>
+          </MenuItem>
+          
+          <Box mb={isNonMobile ? "25px" : "1px"}>
               <Box display="flex" justifyContent="center" alignItems="center">
                 <img
                   alt="profile-user"
@@ -215,8 +183,8 @@ const SideBar = ({ shadow = false }) => {
                 </Typography>
               </Box>
             </Box>
-          )}
-          <Box paddingLeft={collapsed ? "0" : "10%"}>
+          
+          <Box paddingLeft={"10%"}>
             {menuItems.map((item, index) => (
               <React.Fragment key={index}>
                   <Item

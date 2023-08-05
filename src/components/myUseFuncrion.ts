@@ -52,3 +52,34 @@ export const totalHours = (): {year: number, month: number} => {
   const month = workDay * 12;
   return { year, month };
 };
+
+
+export const calculateConstants = (
+  totalMonth: number,
+  totalMonthHours: number,
+  totalYear: number,
+  totalYearHours: number,
+  userEarningHour: number
+) => {
+  const PERCENTUAL_MONTH = precisionRound(percentage(totalMonth, totalMonthHours), 1);
+  const PERCENTUAL_YEAR = precisionRound(percentage(totalYear, totalYearHours), 1);
+  const ERNIN_HOUR_TOTAL = precisionRound(totalMonth * userEarningHour, 2);
+  const ERNIN_HOUR_YEAR = precisionRound(totalYear * userEarningHour, 2);
+  const PERCENTUAL_ERN_MONTH = precisionRound(
+    percentage(ERNIN_HOUR_TOTAL, totalMonthHours * userEarningHour),
+    1
+  );
+  const PERCENTUAL_ERN_YEAR = precisionRound(
+    percentage(ERNIN_HOUR_YEAR, totalYearHours * userEarningHour),
+    1
+  );
+
+  return {
+    PERCENTUAL_MONTH,
+    PERCENTUAL_YEAR,
+    ERNIN_HOUR_TOTAL,
+    ERNIN_HOUR_YEAR,
+    PERCENTUAL_ERN_MONTH,
+    PERCENTUAL_ERN_YEAR,
+  };
+};

@@ -17,12 +17,14 @@ import Logo from "../../components/svg/logo";
 import { Search } from "@mui/icons-material";
 import Brightness4Icon from '@mui/icons-material/Brightness4';
 import Brightness7Icon from '@mui/icons-material/Brightness7';
-import { useProSidebar } from "react-pro-sidebar";
-const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false, colorMode }) => {
+import { useDispatch  } from 'react-redux';
+import { setToggle } from '../../tokenReducer';
+import MenuIcon from '@mui/icons-material/Menu';
+
+const Topbar: React.FC<{colorMode: any }> = ({ colorMode }) => {
   const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)"); 
-  const { collapseSidebar } = useProSidebar();
-
+  const dispatch = useDispatch();
   const [seed, setSeed] = useState(1);
   const reset = () => {
     setSeed(Math.random());
@@ -34,7 +36,7 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
 
   const handleLogout = () => {
     setOpen(false);
-    navigate('/signin');
+    navigate('/login');
   };
   return (<>
       <Dialog open={open} onClose={() => setOpen(false)}>
@@ -52,21 +54,20 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
         </DialogActions>
       </Dialog>
     <Box
-      display={shadow ? "none" : "flex"}
+      display={"flex"}
       justifyContent="space-between"
       p={2}
       sx={{
       // backgroundColor: theme.palette.mode  === 'light' && theme.palette.primary.main,
       }}
       >
-      <IconButton
+      {isNonMobile && <IconButton
         onClick={reset}
         sx={{ ":hover ": { backgroundColor: "transparent" } }}
-      >
-
+      > 
         <Logo key={seed} width="50px" height="25px" />
-      </IconButton>
-      <Button onClick={() => collapseSidebar}> Test</Button>
+      </IconButton>}
+      { !isNonMobile && <IconButton onClick={() => dispatch(setToggle())}><MenuIcon /> </IconButton>}
       <Box
         display={isNonMobile ? "flex" : "none"}
         borderRadius="4px"
@@ -92,7 +93,6 @@ const Topbar: React.FC<{ shadow?: boolean, colorMode: any }> = ({ shadow = false
         </IconButton>
       </Box>
       <Box>
-        {theme.palette.mode} mode
         <IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
           {theme.palette.mode === 'dark' ? <Brightness7Icon /> : <Brightness4Icon />}
         </IconButton>

@@ -10,7 +10,6 @@ import FormMonth from "../scenes/formMonth";
 import SingIn from "../scenes/login";
 import Dashboard from "../scenes/dashboard";
 import Team from "../scenes/team";
-
 import { Routes, Route, useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 

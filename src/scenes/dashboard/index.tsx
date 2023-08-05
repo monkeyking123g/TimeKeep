@@ -17,16 +17,13 @@ import Grid from '@mui/system/Unstable_Grid';
 import dayjs from "dayjs";
 import { loadData } from "../../api";
 import { convertHoursToHMS } from "../time"
-import {
-  percentage,
-  precisionRound,
-  totalHours,
-} from "../../components/myUseFuncrion";
+import { calculateConstants, totalHours } from "../../components/myUseFuncrion";
 
 // @ts-ignore
 import AnimatedNumber from "animated-number-react";
 import { motion } from "framer-motion";
 import styled from '@mui/system/styled';
+
 
 const Item = styled(Paper)(({ theme }) => ({
   display: "flex",
@@ -63,28 +60,55 @@ const Dashboard = () => {
     setData();
   }, []);
 
-  const percentMonth = precisionRound(
-    percentage(totalMonth, totalMonthHours),
-    1
-  );
-  const percentYear = precisionRound(percentage(totalYear, totalYearHours), 1);
-  const erninHourTotal = precisionRound(
-    totalMonth * user.earning_hour,
-    2
-  );
-  const erninHourYear = precisionRound(
-    totalYear * user.earning_hour,
-    2
-  );
-  const percentErnMonth = precisionRound(
-    percentage(erninHourTotal, totalMonthHours * user.earning_hour),
-    1
-  );
-  const percentErnYear = precisionRound(
-    percentage(erninHourYear, totalYearHours * user.earning_hour, ),
-    1
-  );
-  const formatValue = (erninHourYear: any) => erninHourYear.toFixed(2);
+  const {
+    PERCENTUAL_MONTH,
+    PERCENTUAL_YEAR,
+    ERNIN_HOUR_TOTAL,
+    ERNIN_HOUR_YEAR,
+    PERCENTUAL_ERN_MONTH,
+    PERCENTUAL_ERN_YEAR,
+  } = calculateConstants(totalMonth, totalMonthHours, totalYear, totalYearHours, user.earning_hour);
+
+  const formatValue = (value: number) => value.toFixed(2);
+
+  const gridItems = [
+    {
+      title: totalMonth,
+      subtitle: 'Sum by Month',
+      process: totalMonth,
+      increase: `+${PERCENTUAL_MONTH}%`,
+      icon: (
+        <AccessTimeOutlinedIcon sx={{ fontSize: '26px', color: theme.palette.grey[500] }} />
+      ),
+    },
+    {
+      title: `${ERNIN_HOUR_TOTAL} $`,
+      subtitle: 'Earning this Month',
+      process: PERCENTUAL_ERN_MONTH || 0,
+      increase: `+${PERCENTUAL_ERN_MONTH || 0}%`,
+      icon: (
+        <PointOfSale sx={{ color: theme.palette.grey[500], fontSize: '26px' }} />
+      ),
+    },
+    {
+      title: totalYear,
+      subtitle: 'Sum by Year',
+      process: PERCENTUAL_YEAR || 0,
+      increase: `+${PERCENTUAL_YEAR || 0}%`,
+      icon: (
+        <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.grey[500], fontSize: '26px' }} />
+      ),
+    },
+    {
+      title: user.earning_hour,
+      subtitle: 'Salary to Hourly',
+      process: 50,
+      increase: '+50%',
+      icon: (
+        <EuroOutlinedIcon sx={{ color: theme.palette.grey[500], fontSize: '26px' }} />
+      ),
+    },
+  ];
   return (
     <Box
       m="20px"
@@ -102,65 +126,19 @@ const Dashboard = () => {
       </Box>
 
       <Grid container spacing={2} >
-      <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item elevation={6} >
+        {gridItems.map((item, index) => (
+          <Grid key={index} xs={12} sm={6} md={3} lg={3}>
+            <Item elevation={6}>
               <StateBox
-                title={totalMonth}
-                subtitle="Sum by Month"
-                process={totalMonth}
-                increase={`+${percentMonth}%`}
-                icon={
-                  <AccessTimeOutlinedIcon 
-                  sx={{ fontSize: "26px" , color: theme.palette.grey[500] }}
-                  />
-                }
+                title={item.title}
+                subtitle={item.subtitle}
+                process={item.process}
+                increase={item.increase}
+                icon={item.icon}
               />
-          </Item>
-      </Grid>
-        <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item elevation={6} >
-            <StateBox
-                title={`${erninHourTotal} $`}
-                subtitle="Earning this Month"
-                process={percentErnMonth || 0}
-                increase={`+${percentErnMonth}%`}
-                icon={
-            
-                  <PointOfSale 
-                    sx={{ color:  theme.palette.grey[500], fontSize: "26px" }}
-                  />
-                }
-              />
-          </Item>
-        </Grid>
-        <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item elevation={6} >
-            <StateBox
-              title={totalYear}
-              subtitle="Sum by Year"
-              process={percentYear || 0}
-              increase={`+${percentYear}%`}
-              icon={
-                <AccessTimeFilledOutlinedIcon sx={{ color: theme.palette.grey[500],  fontSize: "26px" }} />
-              }
-            />
-          </Item>
-        </Grid>
-        <Grid xs={12} sm={6} md={3} lg={3}>
-          <Item elevation={6} >
-            <StateBox
-              title={user.earning_hour}
-              subtitle="Salary to Hourly"
-              process={50}
-              increase="+50%"
-              icon={
-                <EuroOutlinedIcon 
-                  sx={{ color: theme.palette.grey[500], fontSize: "26px" }}
-                />
-              }
-            />
-          </Item>
-        </Grid>
+            </Item>
+          </Grid>
+        ))}
         <Grid xs={12} sm={6} md={6} lg={6}>
           <Paper elevation={6} sx={{ height: '250px'}} >
             <Typography sx={{
@@ -178,7 +156,7 @@ const Dashboard = () => {
               <ProgressCircle
                 size="125"
                 progressColor={theme.palette.secondary.main}
-                progress={percentErnYear}
+                progress={PERCENTUAL_ERN_YEAR}
               />
         
               <Typography
@@ -190,7 +168,7 @@ const Dashboard = () => {
               >
                 $&nbsp;
           
-                <AnimatedNumber value={erninHourYear} formatValue={formatValue} />
+                <AnimatedNumber value={ERNIN_HOUR_YEAR} formatValue={formatValue} />
                 &nbsp;Revenue gerated this year.
               </Typography>
         
