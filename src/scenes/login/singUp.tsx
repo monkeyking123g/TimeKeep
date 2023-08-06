@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import Axios from 'axios';
 import CircularIndeterminate from '../../components/Circular';
 import CustomizedSnackbars from '../../components/Alert';
-import { config } from '../../components/myUseFuncrion';
+import { config } from '../../api';
 import UseButton from '../../components/ButtonUI/Button';
 import { initialValues, userSchema } from './formShema';
 import Textfiled from '../../components/FormsUI/Textfiled';

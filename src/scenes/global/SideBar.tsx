@@ -12,7 +12,7 @@ import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { grey } from '@mui/material/colors';
 import { useDispatch, useSelector, } from 'react-redux';
-import { setToggle } from '../../tokenReducer';
+import { setToggle } from '../../redux/tokenReducer';
 
 interface MenuItems {
   title: string;

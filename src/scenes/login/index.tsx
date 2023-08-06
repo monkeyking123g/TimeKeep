@@ -38,7 +38,6 @@ const SignInSide: React.FC = () => {
   };
 
   return (
-    // <ThemeProvider theme={theme}>
       <Grid container component="main" sx={{ height: "100vh", width: "100vw" }}>
         <CssBaseline />
         <Grid
@@ -100,7 +99,6 @@ const SignInSide: React.FC = () => {
           </Box>
         </Grid>
       </Grid>
-    // </ThemeProvider>
   );
 };
 export default SignInSide;

@@ -8,8 +8,8 @@ import Axios from "axios";
 import CustomizedSnackbars from "../../components/Alert";
 import CircularIndeterminate from "../../components/Circular";
 import UseButton from "../../components/ButtonUI/Button";
-import { setUser } from "../../userReducer"
-import { setAccessToken } from "../../tokenReducer"
+import { setUser } from "../../redux/userReducer"
+import { setAccessToken } from "../../redux/tokenReducer"
 
 
 

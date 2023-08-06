@@ -17,7 +17,7 @@ import Grid from '@mui/system/Unstable_Grid';
 import dayjs from "dayjs";
 import { loadData } from "../../api";
 import { convertHoursToHMS } from "../time"
-import { calculateConstants, totalHours } from "../../components/myUseFuncrion";
+import { calculateConstants, totalHours } from "../../components/utils";
 
 // @ts-ignore
 import AnimatedNumber from "animated-number-react";
@@ -119,9 +119,7 @@ const Dashboard = () => {
     >
 
       <Box display="flex" justifyContent="space-between" alignItems="center">
-  
-        <Header title="DASHBOARD" subtitle="Welcom to your dashboard." />
-  
+        <Header title="DASHBOARD" />
       {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
 

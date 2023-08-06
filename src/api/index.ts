@@ -2,8 +2,23 @@ import dayjs from "dayjs";
 import Axios from "axios";
 import "dayjs/locale/it";
 
+interface PostTime {
+  company: string,
+  start: string,
+  end: string,
+  dateCreated: Date,
+  total: number,
+  owner: string
+}
+interface PostMonth {
+  total: number,
+  dateCreated: Date,
+  month: string,
+  owner: string
+}
 
-const config = {
+
+export const config = {
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
@@ -49,7 +64,7 @@ export const loadData = async (userId: string) => {
 };
 
 /****************  Post  ************************/ 
-export const postTimes = async (values: object) => {
+export const postTimes = async (values: PostTime) =>   {
   const post = await Axios.post(
     `${process.env.REACT_APP_DOMAIN}/day`,
     values,
@@ -57,7 +72,7 @@ export const postTimes = async (values: object) => {
   );
   return post;
 };
-export const postMonth = async (newValuse: object) => {
+export const postMonth = async (newValuse: PostMonth) => {
   const response = await Axios.post(
     `${process.env.REACT_APP_DOMAIN}/month`,
     newValuse,

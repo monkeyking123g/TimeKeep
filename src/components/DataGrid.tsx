@@ -19,7 +19,6 @@ const CustomDataGrid = ({
   onPurge,
   selectedRows
 }: any) => {
-  const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const [selectionModel, setSelectionModel] = React.useState([]);
 
@@ -50,7 +49,6 @@ const CustomDataGrid = ({
         }}
         selectionModel={selectedRows}
         components={{ Toolbar: CustomToolbar, LoadingOverlay: LinearProgress }}
-        // loading
       />
     </Box>
   );

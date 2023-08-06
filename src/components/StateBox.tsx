@@ -1,6 +1,6 @@
 import React from "react";
 import { Box, Typography, useTheme } from "@mui/material";
-import { tokens } from "../theme";
+import { tokens } from "../themeDelete";
 import ProgressCircle from "./ProgressCircle";
 // @ts-ignore
 import AnimatedNumber from "animated-number-react";

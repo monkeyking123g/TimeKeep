@@ -27,12 +27,6 @@ export const numberWithSep = (x: number): string => {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
-export const config = {
-  headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
-  },
-};
 
 function getLastDayOfYear(): Date {
   return new Date(dateYear, 11, 31);

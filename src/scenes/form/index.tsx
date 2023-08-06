@@ -6,11 +6,10 @@ import Header from "../../components/Header";
 import CircularIndeterminate from "../../components/Circular";
 import dayjs from "dayjs";
 import "dayjs/locale/it";
-import moment from "moment";
 import UseButton from "../../components/ButtonUI/Button";
 import { postTimes } from "../../api";
 import CustomizedSnackbars from "../../components/Alert";
-import { precisionRound } from "../../components/myUseFuncrion";
+import { precisionRound } from "../../components/utils";
 import { motion } from "framer-motion";
 import Textfiled from "../../components/FormsUI/Textfiled";
 import DatePickerUse from "../../components/DatePickerUI";
@@ -37,14 +36,13 @@ const Form = () => {
   const handleFormSubmit = async (values: any, actions: any) => {
     setLoading(true);
     try {
-      const start = moment(`2022-01-01 ${values.start}`);
-      const end = moment(`2022-01-01 ${values.end}`);
-      // Calculate the duration
-      const duration = moment.duration(end.diff(start));
-      const hours = duration.asHours();
+      const start = dayjs(`2022-01-01 ${values.start}`, "YYYY-MM-DD HH:mm");
+      const end = dayjs(`2022-01-01 ${values.end}`, "YYYY-MM-DD HH:mm");
+
+      const durationInHours = end.diff(start, "hours");
 
       const newValuse = Object.assign(values, {
-        total: precisionRound(hours, 2),
+        total: precisionRound(durationInHours, 2),
         owner: user._id,
       });
       const response = await postTimes(newValuse);
@@ -91,7 +89,7 @@ const Form = () => {
        
         <Header
           title="Sum by Day "
-          subtitle="Created a New Time by Day"
+
         />
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>

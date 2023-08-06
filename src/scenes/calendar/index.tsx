@@ -10,7 +10,6 @@ import listPlugin from "@fullcalendar/list";
 import FormDialog from "../../components/DialogUI";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import dayjs from "dayjs";
-import moment from "moment";
 import Axios from "axios";
 import { getUserTime, postTimes } from "../../api";
 import {
@@ -24,7 +23,7 @@ import {
 import { useStyleFullcalendar } from "../../style";
 import { useSelector } from 'react-redux';
 import Header from "../../components/Header";
-import { tokens } from "../../theme";
+import { tokens } from "../../themeDelete";
 import { motion } from "framer-motion";
 // @ts-ignore
 import { CalendarApi } from "fullcalendar";
@@ -54,13 +53,7 @@ const Calendar: React.FC<CalendarProps>  = () => {
   const user = useSelector((state: any) => state.user);
   const [loading, setLoading] = useState(false);
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  // const styleCallendar = useStyleFullcalendar({
-  //   // grey: colors.grey[800],
-  //   // green: colors.greenAccent[500],
-  //   // primary: colors.primary[500],
-  //   // textColor: colors.textColor[100],
-  // });
-
+  
   /***************  useEffect ****************/ 
   useEffect(() => {
     const loadData = async () => {
@@ -126,13 +119,6 @@ const Calendar: React.FC<CalendarProps>  = () => {
 
           setDataAweit(false);
           handleClosePopwindow();
-
-          const start = moment(`2022-01-01 ${time.startHour}`);
-          const end = moment(`2022-01-01 ${time.endHour}`);
-
-          // Calculate the duration
-          const duration = moment.duration(end.diff(start));
-          const durationInHours = duration.asHours();
 
           const values: any = {
             company: time.company,
@@ -219,8 +205,6 @@ const Calendar: React.FC<CalendarProps>  = () => {
       <Box display="flex" justifyContent="space-between">
         <Header
           title="Calendar"
-          // TitleColor={colors.pink[500]}
-          subtitle="Full Calendar Interactive Page"
         />
        
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}

@@ -1,28 +1,28 @@
 import React from "react";
-import { useState } from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { useLocation, useNavigate, Route, Routes, Router   } from "react-router-dom";
+import { Route, Routes  } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 import Topbar from "./scenes/global/TopBar";
 import SideBar from "./scenes/global/SideBar";
 import AnimationRoutes from "./components/AnimationRoutes";
-import { getDesignTokens } from "./test"
+import { getDesignTokens } from "./theme"
 import { useSelector } from 'react-redux';
 import SingIn from "./scenes/login";
+import { RootState } from "./redux/store"
 const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
-export function HomePage() {
+
+function HomePage() {
   const colorMode = React.useContext(ColorModeContext);
-  const user = useSelector((state: any) => state.user);
+  const access_token = useSelector((state: RootState ) => state.access_token )
 
-  let navigate = useNavigate();
+  // let navigate = useNavigate();
 
-  React.useEffect(() => {
-    if (JSON.stringify(user) === "{}") {
-      return navigate("/login");
-    }
-  }, [user]);
+  // React.useEffect(() => {
+  //   if (!access_token) {
+  //     return navigate("/login");
+  //   }
+  // }, [access_token, navigate]);
 
-  
   return (
     <>
       <CssBaseline />
@@ -41,7 +41,6 @@ export function HomePage() {
 
 
 export default function App() {
-  const location = useLocation();
   const [mode, setMode] = React.useState<'light' | 'dark'>('dark');
   const colorMode = React.useMemo(
     () => ({

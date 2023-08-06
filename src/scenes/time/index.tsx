@@ -10,7 +10,7 @@ import { getUserTime, deletTime } from "../../api";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import EventItem from "../../components/EventItem";
 
-export interface TimeData {
+export interface RowsData {
   id: string;
   company: string;
   start: string;
@@ -77,9 +77,19 @@ export function convertHoursToHMS(hours: number): string {
 
   return `${hoursStr} ${minutesStr} ${secondsStr}`.trim();
 }
+const initialValue: RowsData[] = [
+  {
+    id: 'testId',
+    company: 'google',
+    start: '08:00',
+    end: '12:00',
+    total: "4",
+    dateCreated: '12-05-2023'
+  }
+]
 
 const ListTime: React.FC = () => {
-  const [rows, setRows] = useState<TimeData[]>([]);
+  const [rows, setRows] = useState<RowsData[]>(initialValue);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.user);
@@ -91,8 +101,9 @@ const ListTime: React.FC = () => {
     const loadData = async () => {
       try {
         const response = await getUserTime(user._id);
+        
         if (Array.isArray(response.data)) {
-          const newData: TimeData[] = response.data.map((el: any) => ({
+          const newData: RowsData[] = response.data.map((el: any) => ({
             id: el._id,
             company: el.company,
             start: el.start.slice(0, 5),
@@ -117,7 +128,7 @@ const ListTime: React.FC = () => {
     setSelectedRows(selection);
   };
 
-  const removeObjectWithId = (arr: TimeData[], id: string) => {
+  const removeObjectWithId = (arr: RowsData[], id: string) => {
     return arr.filter((item) => item.id !== id);
   };
 
@@ -167,7 +178,7 @@ const ListTime: React.FC = () => {
       transition={{ duration: 0.3 }}
     >
       <Box display="flex" justifyContent="space-between">
-        <Header title="All Time" subtitle="List by Time Created" />
+        <Header title="All Time" />
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
 

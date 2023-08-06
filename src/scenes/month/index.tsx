@@ -18,6 +18,7 @@ export interface RowsData {
   dateCreated: string,
   [key: string]: string | number;
 }
+
 const colums = [
   { field: "nam", headerName: "ID", flex: 0.5 },
   {
@@ -45,8 +46,18 @@ const colums = [
   },
 ];
 
+const initialValue: RowsData[] = [
+  {
+    id: 'testId',
+    nam: 1,
+    month: 'genaio 2023',
+    hours: 200,
+    dateCreated: '12-05-2023',
+  }
+]
+
 const Month = () => {
-  const [rows, setRows] = useState<RowsData[]>([]);
+  const [rows, setRows] = useState<RowsData[]>(initialValue);
   const [selectedRows, setSelectedRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.user);
@@ -133,7 +144,7 @@ const Month = () => {
       transition={{ duration: 0.3 }}
     > 
       <Box display="flex" justifyContent="space-between">
-        <Header title="All Month" subtitle="List by Month created." />
+        <Header title="All Month" />
         {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
       </Box>
       

@@ -1,4 +1,3 @@
-import moment from "moment";
 import * as yup from "yup";
 import dayjs from "dayjs";
 
@@ -15,7 +14,9 @@ export const userSchema = yup.object().shape({
     .string()
     .test("is-greater", "end time should be greater", function (value) {
       const { start } = this.parent;
-      return moment(value, "HH:mm").isSameOrAfter(moment(start, "HH:mm"));
+      const valueDay = dayjs(value, "HH:mm");
+      const startDay = dayjs(start, "HH:mm");
+      return valueDay.isAfter(startDay);
     }),
   dateCreated: yup.date(),
 });
