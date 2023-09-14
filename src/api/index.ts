@@ -3,25 +3,23 @@ import Axios from "axios";
 import "dayjs/locale/it";
 
 interface PostTime {
-  company: string,
-  start: string,
-  end: string,
-  dateCreated: Date,
-  total: number,
-  owner: string
+  company: string;
+  start: string;
+  end: string;
+  dateCreated: Date;
+  total: number;
+  owner: string;
 }
 interface PostMonth {
-  total: number,
-  dateCreated: Date,
-  month: string,
-  owner: string
+  total: number;
+  dateCreated: Date;
+  month: string;
+  owner: string;
 }
-
 
 export const config = {
   headers: {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "GET,PUT,POST,DELETE,PATCH,OPTIONS",
+    "Content-Type": "application/x-www-form-urlencoded",
   },
 };
 
@@ -31,27 +29,39 @@ export const loadData = async (userId: string) => {
       `${process.env.REACT_APP_DOMAIN}/day/user/${userId}`,
       config
     );
-   
+
     if (Array.isArray(response.data) && response.data.length > 0) {
       const currentMonth = dayjs().locale("it").format("MM");
       const currentYear = dayjs().locale("it").format("YYYY");
-  
+
       const eventsMonth = response.data.filter((e) => {
         const { dateCreated } = e;
-        const [year, month] = dayjs(dateCreated).locale("it").format("YYYY-MM-DD").split("-");
+        const [year, month] = dayjs(dateCreated)
+          .locale("it")
+          .format("YYYY-MM-DD")
+          .split("-");
         return +currentMonth === +month && currentYear === year;
       });
-  
-      const calculateTotalMonth = eventsMonth.reduce((total, element) => total + element.total, 0);
-  
+
+      const calculateTotalMonth = eventsMonth.reduce(
+        (total, element) => total + element.total,
+        0
+      );
+
       const eventsYear = response.data.filter((e) => {
         const { dateCreated } = e;
-        const [year] = dayjs(dateCreated).locale("it").format("YYYY-MM-DD").split("-");
+        const [year] = dayjs(dateCreated)
+          .locale("it")
+          .format("YYYY-MM-DD")
+          .split("-");
         return currentYear === year;
       });
-  
-      const calculateTotalYear = eventsYear.reduce((total, element) => total + element.total, 0);
-  
+
+      const calculateTotalYear = eventsYear.reduce(
+        (total, element) => total + element.total,
+        0
+      );
+
       return { rows: response.data, calculateTotalMonth, calculateTotalYear };
     }
   } catch (error) {
@@ -60,11 +70,11 @@ export const loadData = async (userId: string) => {
     } else {
       console.log("Error", error.message);
     }
-  } 
+  }
 };
 
-/****************  Post  ************************/ 
-export const postTimes = async (values: PostTime) =>   {
+/****************  Post  ************************/
+export const postTimes = async (values: PostTime) => {
   const post = await Axios.post(
     `${process.env.REACT_APP_DOMAIN}/day`,
     values,
@@ -81,10 +91,9 @@ export const postMonth = async (newValuse: PostMonth) => {
   return response;
 };
 
-/****************  GET  ************************/  
+/****************  GET  ************************/
 export const getUserTime = async (id: string) => {
   const response = await Axios.get(
-
     `${process.env.REACT_APP_DOMAIN}/day/user/${id}`,
     config
   );
@@ -92,14 +101,13 @@ export const getUserTime = async (id: string) => {
 };
 export const getUserMonth = async (id: string) => {
   const response = await Axios.get(
-
     `${process.env.REACT_APP_DOMAIN}/month/user/${id}`,
     config
   );
   return response;
 };
 
-/****************  DELETE  ************************/  
+/****************  DELETE  ************************/
 export const deletMonth = async (id: string) => {
   await Axios.delete(`${process.env.REACT_APP_DOMAIN}/month/${id}`);
 };

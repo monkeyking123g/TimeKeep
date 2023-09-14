@@ -13,7 +13,7 @@ import UseButton from "../../components/ButtonUI/Button";
 import DatePickerUse from "../../components/DatePickerUI";
 import { postMonth } from "../../api";
 import React from "react";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 
 enum MessageType {
   Success = "Successfully Created.",
@@ -30,7 +30,6 @@ const FormMonth = () => {
     state: false,
     title: "",
   });
-
 
   const handleFormSubmit = async (values: any, actions: any) => {
     setLoading(true);
@@ -85,13 +84,7 @@ const FormMonth = () => {
         severity="success"
       />
       <Box display="flex" justifyContent="center" mb="15px">
-
-        <Header
-          title="Sum by Month"
-          subtitle="Created a New Sum by Month"
-        />
-
-        {loading ? <CircularIndeterminate /> : <Box display="flex" p="20px" />}
+        <Header title="Sum by Month" />
       </Box>
       <Formik
         onSubmit={handleFormSubmit}
@@ -99,25 +92,21 @@ const FormMonth = () => {
         validationSchema={userSchema}
       >
         {({ handleSubmit, setFieldValue }) => (
-         
           <Box
             width="100%"
             height="75vh"
             display="flex"
             justifyContent="center"
           >
-           
             <form
               onSubmit={handleSubmit}
               style={{ marginTop: "30px", width: "700px" }}
             >
-             
               <Box
                 display="grid"
                 gap="30px"
                 gridTemplateColumns="repeat(4, minmax(0, 1fr))"
               >
-               
                 <Textfiled
                   type="number"
                   label="Total Time"
@@ -126,7 +115,7 @@ const FormMonth = () => {
                     gridColumn: "span 4",
                   }}
                 />
-                
+
                 <DatePickerUse
                   name="month"
                   onChange={(newValue: any) => {
@@ -139,7 +128,6 @@ const FormMonth = () => {
                   label="Month"
                 />
 
-                
                 <DatePickerUse
                   name="dateCreated"
                   label="Date Created"

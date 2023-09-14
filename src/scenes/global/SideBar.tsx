@@ -10,14 +10,14 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { grey } from '@mui/material/colors';
-import { useDispatch, useSelector, } from 'react-redux';
-import { setToggle } from '../../redux/tokenReducer';
+import { grey } from "@mui/material/colors";
+import { useDispatch, useSelector } from "react-redux";
+import { setToggle } from "../../redux/tokenReducer";
 
 interface MenuItems {
   title: string;
-  to: string,
-  icon: React.ReactNode,
+  to: string;
+  icon: React.ReactNode;
 }
 const menuItems: MenuItems[] = [
   {
@@ -62,13 +62,7 @@ const menuItems: MenuItems[] = [
   },
 ];
 
-const Item = ({
-  title,
-  to,
-  icon,
-  selected,
-  setSelected
-}: any) => {
+const Item = ({ title, to, icon, selected, setSelected }: any) => {
   return (
     <MenuItem
       active={selected === title}
@@ -90,18 +84,22 @@ const SideBar = () => {
   const [selected, setSelected] = useState<any>();
   const toggle = useSelector((state: any) => state.token.toggle);
   const dispatch = useDispatch();
-
+  const buttonDisableEnable =
+    theme.palette.mode === "light"
+      ? theme.palette.primary.main
+      : theme.palette.primaryGreen.main;
+  const buttonActive =
+    theme.palette.mode === "light"
+      ? theme.palette.text.secondary
+      : theme.palette.primary.main;
   const menuItemStyles = {
-    button: ({
-      level,
-      active
-    }: any) => {
+    button: ({ level, active }: any) => {
       if (level === 0)
         return {
-          color: active ? theme.palette.primary.main : theme.palette.text.primary,
-          backgroundColor: active && theme.palette.primaryGreen.main,
+          color: active ? buttonActive : theme.palette.text.primary,
+          backgroundColor: active && buttonDisableEnable,
           "&:hover": {
-            backgroundColor: theme.palette.primaryGreen.main,
+            backgroundColor: buttonDisableEnable,
           },
         };
     },
@@ -120,89 +118,83 @@ const SideBar = () => {
       }}
     >
       <Sidebar
-        onBackdropClick ={() => dispatch(setToggle())}
+        onBackdropClick={() => dispatch(setToggle())}
         toggled={toggle}
         breakPoint={isNonMobile ? "lg" : "always"}
-        backgroundColor={theme.palette.mode  === 'light' ? theme.palette.primary.main : theme.palette.primaryGreen.main}
+        backgroundColor={
+          theme.palette.mode === "light"
+            ? theme.palette.primary.main
+            : theme.palette.primaryGreen.main
+        }
         rootStyles={{
           border: "none",
         }}
       >
-        <Menu  menuItemStyles={menuItemStyles}>
-
+        <Menu menuItemStyles={menuItemStyles}>
           <MenuItem
-              style={{
-                margin: "10px 0 20px 0",
-              }}
-            >
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Typography variant="h3" 
-                color={grey[400]}
-                >
-                  ADMINIS
-                </Typography>
-              
-              </Box>
-          </MenuItem>
-          
-          <Box mb={isNonMobile ? "25px" : "1px"}>
-              <Box display="flex" justifyContent="center" alignItems="center">
-                <img
-                  alt="profile-user"
-                  width="100px"
-                  height="100px"
-                  src={
-                    user.image_url
-                      ? `${process.env.REACT_APP_DOMAIN}/${user.image_url}`
-                      : "https://www.3dproduction.it/public/no_attore.jpg?nocache="
-                  }
-                  style={{
-                    cursor: "pointer",
-                    borderRadius: "50%",
-                    boxShadow: "rgba(0, 0, 0, 1) 0px 2px 12px 0px",
-                    objectFit: "cover",
-                  }}
-                />
-              </Box>
-              <Box textAlign="center">
-                <Typography
-                  variant='subtitle1'
-                  fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
-                >
-                  {user.email}
-                </Typography>
-                <Typography variant="h5" 
-                  color={theme.palette.primary.main}
-                >
-                  VP Chef
-                </Typography>
-              </Box>
+            style={{
+              margin: "10px 0 20px 0",
+            }}
+          >
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <Typography variant="h3" color={grey[400]}>
+                ADMINIS
+              </Typography>
             </Box>
-          
+          </MenuItem>
+
+          <Box mb={isNonMobile ? "25px" : "1px"}>
+            <Box display="flex" justifyContent="center" alignItems="center">
+              <img
+                alt="profile-user"
+                width="100px"
+                height="100px"
+                src={
+                  user.image_url
+                    ? `${process.env.REACT_APP_DOMAIN}/${user.image_url}`
+                    : "https://www.3dproduction.it/public/no_attore.jpg?nocache="
+                }
+                style={{
+                  cursor: "pointer",
+                  borderRadius: "50%",
+                  boxShadow: "rgba(0, 0, 0, 1) 0px 2px 12px 0px",
+                  objectFit: "cover",
+                }}
+              />
+            </Box>
+            <Box textAlign="center">
+              <Typography
+                variant="subtitle1"
+                fontWeight="bold"
+                sx={{ m: "10px 0 0 0" }}
+              >
+                {user.email}
+              </Typography>
+              <Typography variant="h5" color={theme.palette.primary.main}>
+                VP Chef
+              </Typography>
+            </Box>
+          </Box>
+
           <Box paddingLeft={"10%"}>
             {menuItems.map((item, index) => (
               <React.Fragment key={index}>
-                  <Item
-                    title={item.title}
-                    to={item.to}
-                    icon={item.icon}
-                    selected={selected}
-                    setSelected={setSelected}
-                  />
-                  {index % 3 === 0 && ( 
-                    <Typography
-                      variant="h6"
-                      color={grey[400]}
-                      sx={{ m: "15px 0 5px 20px" }}
-                    >
-                      {index === 0 ? "Data" : index === 4 ? "Created" : "Charts"}
-                    </Typography>
-                  )}
+                <Item
+                  title={item.title}
+                  to={item.to}
+                  icon={item.icon}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                {index % 3 === 0 && (
+                  <Typography
+                    variant="h6"
+                    color={grey[400]}
+                    sx={{ m: "15px 0 5px 20px" }}
+                  >
+                    {index === 0 ? "Data" : index === 4 ? "Created" : "Charts"}
+                  </Typography>
+                )}
               </React.Fragment>
             ))}
           </Box>
