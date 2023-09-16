@@ -18,7 +18,6 @@ const CustomAvatar = styled(Avatar)(({ theme }) => ({
     width: '200px', 
     height: '200px',  
   [theme.breakpoints.down('md')]: {
-    backgroundColor: 'red',
     width: '100px', 
     height: '100px',  
   },

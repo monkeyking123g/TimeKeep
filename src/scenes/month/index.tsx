@@ -10,7 +10,7 @@ import { convertHoursToHMS } from "../time/index"
 import EventItem from "../../components/EventItem";
 import useMediaQuery from "@mui/material/useMediaQuery";;
 
-export interface RowsData {
+export interface MonthData {
   id: string,
   nam: number,
   month: string,
@@ -46,7 +46,7 @@ const colums = [
   },
 ];
 
-const initialValue: RowsData[] = [
+const initialValue: MonthData[] = [
   {
     id: 'testId',
     nam: 1,
@@ -57,7 +57,7 @@ const initialValue: RowsData[] = [
 ]
 
 const Month = () => {
-  const [rows, setRows] = useState<RowsData[]>(initialValue);
+  const [rows, setRows] = useState<MonthData[]>(initialValue);
   const [selectedRows, setSelectedRows] = useState([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.user);
@@ -70,7 +70,7 @@ const Month = () => {
         const response = await getUserMonth(user._id);
 
         if (Array.isArray(response.data)) {
-          const newData: RowsData[] = response.data.map((el: any, index: number) => {
+          const newData: MonthData[] = response.data.map((el: any, index: number) => {
             return {
               id: el._id,
               nam: index + 1, 

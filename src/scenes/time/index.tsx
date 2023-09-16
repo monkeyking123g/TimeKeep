@@ -10,7 +10,7 @@ import { getUserTime, deletTime } from "../../api";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import EventItem from "../../components/EventItem";
 
-export interface RowsData {
+export interface TimeData {
   id: string;
   company: string;
   start: string;
@@ -77,7 +77,7 @@ export function convertHoursToHMS(hours: number): string {
 
   return `${hoursStr} ${minutesStr} ${secondsStr}`.trim();
 }
-const initialValue: RowsData[] = [
+const initialValue: TimeData[] = [
   {
     id: 'testId',
     company: 'google',
@@ -89,7 +89,7 @@ const initialValue: RowsData[] = [
 ]
 
 const ListTime: React.FC = () => {
-  const [rows, setRows] = useState<RowsData[]>(initialValue);
+  const [rows, setRows] = useState<TimeData[]>(initialValue);
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const user = useSelector((state: any) => state.user);
@@ -103,7 +103,7 @@ const ListTime: React.FC = () => {
         const response = await getUserTime(user._id);
         
         if (Array.isArray(response.data)) {
-          const newData: RowsData[] = response.data.map((el: any) => ({
+          const newData: TimeData[] = response.data.map((el: any) => ({
             id: el._id,
             company: el.company,
             start: el.start.slice(0, 5),
@@ -128,7 +128,7 @@ const ListTime: React.FC = () => {
     setSelectedRows(selection);
   };
 
-  const removeObjectWithId = (arr: RowsData[], id: string) => {
+  const removeObjectWithId = (arr: TimeData[], id: string) => {
     return arr.filter((item) => item.id !== id);
   };
 

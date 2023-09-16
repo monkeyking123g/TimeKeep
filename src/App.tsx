@@ -1,6 +1,6 @@
 import React from "react";
 import { CssBaseline, ThemeProvider } from "@mui/material";
-import { Route, Routes  } from "react-router-dom";
+import { Route, Routes, useNavigate  } from "react-router-dom";
 import { createTheme } from "@mui/material/styles";
 import Topbar from "./scenes/global/TopBar";
 import SideBar from "./scenes/global/SideBar";
@@ -13,15 +13,14 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 
 function HomePage() {
   const colorMode = React.useContext(ColorModeContext);
-  const access_token = useSelector((state: RootState ) => state.access_token )
+  const access_token = useSelector((state: RootState  ) => state.token.access_token )
+  let navigate = useNavigate();
 
-  // let navigate = useNavigate();
-
-  // React.useEffect(() => {
-  //   if (!access_token) {
-  //     return navigate("/login");
-  //   }
-  // }, [access_token, navigate]);
+  React.useEffect(() => {
+    if (!access_token) {
+      return navigate("/login");
+    }
+  }, [access_token, navigate]);
 
   return (
     <>

@@ -109,8 +109,8 @@ export const getUserMonth = async (id: string) => {
 
 /****************  DELETE  ************************/
 export const deletMonth = async (id: string) => {
-  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/month/${id}`);
+  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/month/${id}`, config);
 };
 export const deletTime = async (id: string) => {
-  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/day/${id}`);
+  await Axios.delete(`${process.env.REACT_APP_DOMAIN}/day/${id}`, config);
 };

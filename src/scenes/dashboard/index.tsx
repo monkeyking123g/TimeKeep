@@ -1,6 +1,6 @@
 import "dayjs/locale/it";
 import React from "react";
-import { Box, Typography, useTheme, Paper } from "@mui/material";
+import { Box, Typography, useTheme, Paper, Container } from "@mui/material";
 import { useSelector } from 'react-redux';
 import Header from "../../components/Header";
 import CircularIndeterminate from "../../components/Circular";
@@ -30,6 +30,12 @@ const Item = styled(Paper)(({ theme }) => ({
   alignItems : "center",
   justifyContent : "center",
   height: '150px',
+}));
+const BigItem = styled(Paper)(({ theme }) => ({
+  height: '250px',
+  [theme.breakpoints.down('xl')]: {
+    height: '300px'
+  }
 }));
 
 const Dashboard = () => {
@@ -138,7 +144,7 @@ const Dashboard = () => {
           </Grid>
         ))}
         <Grid xs={12} sm={6} md={6} lg={6}>
-          <Paper elevation={6} sx={{ height: '250px'}} >
+          <BigItem elevation={6} sx={{ height: '250px'}} >
             <Typography sx={{
                   p: theme.spacing(1),
               }} variant="h5" fontWeight={600} color='GrayText'>
@@ -162,6 +168,7 @@ const Dashboard = () => {
                 color="success"
                 sx={{
                   mt: theme.spacing(1),
+                  textAlign: 'center'
                 }}
               >
                 $&nbsp;
@@ -169,16 +176,15 @@ const Dashboard = () => {
                 <AnimatedNumber value={ERNIN_HOUR_YEAR} formatValue={formatValue} />
                 &nbsp;Revenue gerated this year.
               </Typography>
-        
-              <Typography color='GrayText'>
+              <Typography  color='secondary'>
                 Inclides extra misc expenditures and cost
               </Typography>
             </Box>
-        </Paper >
+        </BigItem >
 
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-        <Paper elevation={6}  >
+        <BigItem elevation={6}  >
           <Typography sx={{ padding: theme.spacing(1)}} color='GrayText' variant="h5" fontWeight={600}>
                 Last sum by day created
           </Typography>
@@ -227,7 +233,7 @@ const Dashboard = () => {
 
           </Box>
           
-        </Paper>
+        </BigItem>
      
         </Grid>
         <Grid xs={12}>
@@ -245,7 +251,7 @@ const Dashboard = () => {
                 </Typography>
           
                 <Typography
-                  variant="h3"
+                  variant="h4"
                   fontWeight="500"
                   color="secondary"
                 >

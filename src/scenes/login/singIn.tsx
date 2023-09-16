@@ -56,6 +56,7 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
       );
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
+        localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
         dispatch(setAccessToken(response.data.access_token));
         dispatch(setUser(response.data.user));
 

@@ -9,7 +9,7 @@ const Header : React.FC<HeaderProps> = ({ title }) => {
   // const theme = useTheme();
   const isNonMobile = useMediaQuery("(min-width:600px)");
   return (
-    <Box mb={isNonMobile ? "30px" : "5px"}>
+    <Box mb={isNonMobile ? "10px" : "5px"}>
       <Typography
         variant={isNonMobile ? "h2" : "h4"}
         fontWeight="bold"

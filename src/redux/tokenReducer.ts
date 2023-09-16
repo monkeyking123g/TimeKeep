@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface TokenState {
-    access_token: string
+    access_token: any
     toggle: boolean  
 }
-
+const tokenDataFromLocalStorage: TokenState  | null = JSON.parse(localStorage.getItem('access_token'))
+console.log(tokenDataFromLocalStorage)
 const initialState: TokenState  = {
-  access_token: '',
+  access_token: tokenDataFromLocalStorage,
   toggle: true
 };
   

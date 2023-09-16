@@ -6,7 +6,7 @@ import { TokenState } from './tokenReducer';
 
 export interface RootState {
   user: UserState;
-  access_token: TokenState
+  token: TokenState
 }
 
 export const store = configureStore({
