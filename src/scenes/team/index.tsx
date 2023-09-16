@@ -1,18 +1,35 @@
 import React  from "react";
-import { Box, Typography, useTheme,  Card, CardContent, Avatar, Button } from "@mui/material";
+import { Box, Typography, useTheme,  Card, CardContent, Avatar, Button, List, ListItem } from "@mui/material";
 import { AdminPanelSettingsOutlined } from "@mui/icons-material";
 import Header from "../../components/Header";
 import { useSelector } from 'react-redux';
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { motion } from "framer-motion";
-import { RootState } from "../../redux/store"
+import { RootState } from "../../redux/store";
+import makeStyles from '@mui/styles/makeStyles';
+import { Theme, styled } from '@mui/material/styles';
+
+const useStyles = makeStyles((theme: Theme) => ({
+  typografi: {
+    padding: '2px'
+  },
+}));
+const CustomAvatar = styled(Avatar)(({ theme }) => ({
+    width: '200px', 
+    height: '200px',  
+  [theme.breakpoints.down('md')]: {
+    backgroundColor: 'red',
+    width: '100px', 
+    height: '100px',  
+  },
+}));
 
 const Team = () => {
   const theme = useTheme();
   const user = useSelector((state: RootState) => state.user);
   const pathImage = `${process.env.REACT_APP_DOMAIN}/images/${user.image_url}`;
   const isNonMobile = useMediaQuery("(min-width:600px)");
-
+  const classes = useStyles();
   return (
   
     <Box
@@ -28,44 +45,71 @@ const Team = () => {
         m={isNonMobile ? "40px 0 0 0" : "0"}
         height="75vh"
       >
-       <Card>
-        <CardContent style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-          <Avatar src={user.image_url ? pathImage : "https://source.unsplash.com/random"} sx={{ width: 100, height: 100 }} />
-          <Typography gutterBottom variant="h5" component="div" style={{ marginTop: '10px' }}>
-            {user.email ? user.email: "random@gmail.com"}
-          </Typography>
-          <Typography variant='body1' color="text.secondary">
-            Earning per Hour
-          </Typography>
-          <Typography variant="h6" color="text.secondary">
-            $<span style={{}}>{user.earning_hour}</span> 
-          </Typography>
-          <Typography variant='body1' color="text.secondary">
-            Password
-          </Typography>
-          <Typography variant="h6" color="text.secondary">
-           {user.password ? user.password : "1111"}
-          </Typography>
-          <Typography variant='body1' color="text.secondary">
-            Created
-          </Typography>
-          <Typography variant="h6" color="text.secondary">
-            {user.createdAt ? user.createdAt : "12-05-2023"}
-          </Typography>
-          <Button
-            variant="contained"
-            color='secondary'
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              '& .MuiSvgIcon-root': {
-                marginRight: '5px',
-              },
-            }}
-          >
-            <AdminPanelSettingsOutlined />
-            <Typography>Admin</Typography>
-          </Button>
+       <Card sx={{ minWidth: 275 }}>
+        <CardContent >
+          <Box justifyContent='space-around' alignItems='center' display='flex'>
+            <Box justifyContent='center' alignItems='center' display='flex' flexDirection='column'>
+              <CustomAvatar src={user.image_url ? pathImage : "https://source.unsplash.com/random"} />
+              <Button
+                  variant="contained"
+                  color='secondary'
+                  sx={{
+                    marginTop: '20px',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    '& .MuiSvgIcon-root': {
+                      marginRight: '5px',
+                    },
+                  }}
+                >
+                  <AdminPanelSettingsOutlined />
+                  <Typography>Admin</Typography>
+              </Button>
+            </Box>
+            
+          <Box>
+          <Typography variant="h4" color="text.primary" className={classes.typografi}>
+              User Information
+            </Typography>
+
+          <ul>
+            <li>
+              <Typography variant='body1' color="text.secondary" className={classes.typografi}>
+                Email
+              </Typography>
+              <Typography variant="h6" color="text.secondary" className={classes.typografi}>
+                {user.email}
+              </Typography>
+            </li>
+            <li>
+              <Typography variant='body1' color="text.secondary" className={classes.typografi}>
+                Earning per Hour
+              </Typography>
+              <Typography variant="h6" color="text.secondary" className={classes.typografi}>
+                ${user.earning_hour}
+              </Typography>
+            </li>
+            <li>
+              <Typography variant='body1' color="text.secondary" className={classes.typografi}>
+                Password
+              </Typography>
+              <Typography variant="h6" color="text.secondary" className={classes.typografi}>
+                {user.password ? user.password : "********"}
+              </Typography>
+            </li>
+            <li>
+              <Typography variant='body1' color="text.secondary" className={classes.typografi}>
+                Created
+              </Typography>
+              <Typography variant="h6" color="text.secondary" className={classes.typografi}>
+                {user.createdAt ? user.createdAt.slice(0, 10) : "N/A"}
+              </Typography>
+            </li>
+          </ul>
+
+          </Box>
+            
+          </Box>   
         </CardContent>
       </Card>
       </Box>

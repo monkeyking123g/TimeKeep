@@ -90,7 +90,7 @@ const SideBar = () => {
       : theme.palette.primaryGreen.main;
   const buttonActive =
     theme.palette.mode === "light"
-      ? theme.palette.text.secondary
+      ? '#fff'
       : theme.palette.primary.main;
   const menuItemStyles = {
     button: ({ level, active }: any) => {
