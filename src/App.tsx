@@ -14,6 +14,7 @@ const ColorModeContext = React.createContext({ toggleColorMode: () => {} });
 function HomePage() {
   const colorMode = React.useContext(ColorModeContext);
   const access_token = useSelector((state: RootState  ) => state.token.access_token )
+  console.log(access_token)
   let navigate = useNavigate();
 
   React.useEffect(() => {

@@ -1,17 +1,15 @@
 import * as yup from "yup";
 import React, { useState } from "react";
-import { Dialog, useTheme, Typography } from "@mui/material";
+import { Dialog, useTheme } from "@mui/material";
 import UseButton from "../ButtonUI/Button";
 import { Formik } from "formik";
 
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
+
 
 import Textfiled from "../FormsUI/Textfiled";
-import { useStyledTextField } from "../../style";
-import { tokens } from "../../themeDelete";
 
 const initialValues = {
   startHour: "",
@@ -29,16 +27,7 @@ const FormDialog = ({
   pull
 }: any) => {
   const theme = useTheme();
-  const colors = tokens(theme.palette.mode);
   const [open, setOpen] = useState(true);
-  const CustomTextField = useStyledTextField({
-    // color: colors.greenAccent[500],
-    // globalColor: colors.grey[800],
-  });
-
-  // const handleClickOpen = () => {
-  //   setOpen(true);
-  // };
 
   const handleFormSubmit = (value: any) => {
     pull(value);
@@ -48,9 +37,6 @@ const FormDialog = ({
     <div>
       
       <Dialog open={open} onClose={clous}>        
-        {/* <DialogTitle sx={{ backgroundColor: colors.secondary[500] }}>         
-          <Typography variant="h3">Created</Typography>
-        </DialogTitle>        */}
         <Formik
           onSubmit={handleFormSubmit}
           initialValues={initialValues}
@@ -60,13 +46,11 @@ const FormDialog = ({
             <form onSubmit={handleSubmit} style={{ width: "600px" }}> 
               <DialogContent
                 sx={{
-                  // backgroundColor: colors.secondary[500],
                   display: "flex",
                   flexDirection: "column",
                 }}
               >                
                 <DialogContentText
-                  // sx={{ backgroundColor: colors.secondary[500] }}
                 >
                   A New Time of Day.
                 </DialogContentText>               
@@ -78,7 +62,6 @@ const FormDialog = ({
                     shrink: true,
                   }}
                   name="company"
-                  sx={CustomTextField.root}
                 />
                 
                 <Textfiled
@@ -89,7 +72,6 @@ const FormDialog = ({
                     shrink: true,
                   }}
                   name="startHour"
-                  sx={CustomTextField.root}
                 />
                 
                 <Textfiled
@@ -100,16 +82,13 @@ const FormDialog = ({
                     shrink: true,
                   }}
                   name="endHour"
-                  sx={CustomTextField.root}
                 />
               </DialogContent>            
               <DialogActions 
-              // sx={{ backgroundColor: colors.secondary[500] }}
               >               
                 <UseButton
                   text={"Cancel"}
                   onClick={clous}
-                  bgColor={"#cf6679"}
                 />               
                 <UseButton text={"Conferm"} />
               </DialogActions>

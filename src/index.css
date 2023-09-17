@@ -5,8 +5,8 @@ body,
 .wrapper {
   height: 100%;
   width: 100%;
-  overflow: hidden;
-  scrollbar-width: thin;
+  /* overflow: hidden;
+  scrollbar-width: thin; */
 }
 .app {
   position: relative;

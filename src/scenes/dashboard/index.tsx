@@ -31,9 +31,10 @@ const Item = styled(Paper)(({ theme }) => ({
   justifyContent : "center",
   height: '150px',
 }));
+
 const BigItem = styled(Paper)(({ theme }) => ({
   height: '250px',
-  [theme.breakpoints.down('xl')]: {
+  [theme.breakpoints.down('sm')]: {
     height: '300px'
   }
 }));
@@ -144,7 +145,7 @@ const Dashboard = () => {
           </Grid>
         ))}
         <Grid xs={12} sm={6} md={6} lg={6}>
-          <BigItem elevation={6} sx={{ height: '250px'}} >
+          <BigItem elevation={6}>
             <Typography sx={{
                   p: theme.spacing(1),
               }} variant="h5" fontWeight={600} color='GrayText'>
@@ -184,7 +185,7 @@ const Dashboard = () => {
 
         </Grid>
         <Grid xs={12} sm={6} md={6} lg={6}>
-        <BigItem elevation={6}  >
+        <BigItem elevation={6}>
           <Typography sx={{ padding: theme.spacing(1)}} color='GrayText' variant="h5" fontWeight={600}>
                 Last sum by day created
           </Typography>
@@ -260,16 +261,13 @@ const Dashboard = () => {
               </Box>
             </Box>
           <Box
-            // height="250px"
-            // width="100%"
             sx={{
               overflowX: "auto",
               whiteSpace: "nowrap",
               overflowY: "hidden",
             }}
           >
-          <Box height="250px" width={isNonMobile ? null : "1000px"} m="0 0 0 0">
-          
+            <Box height="200px"  width={isNonMobile ? '100%' : "1000px"} m="0 0 0 0">
                 <LineChart isDashboard={true} />
               </Box>
             </Box> 

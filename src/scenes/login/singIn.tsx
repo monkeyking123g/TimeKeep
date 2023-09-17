@@ -8,8 +8,6 @@ import Axios from "axios";
 import CustomizedSnackbars from "../../components/Alert";
 import CircularIndeterminate from "../../components/Circular";
 import UseButton from "../../components/ButtonUI/Button";
-import { setUser } from "../../redux/userReducer";
-import { setAccessToken } from "../../redux/tokenReducer";
 
 interface SingInProps {
   handleSingUp: () => void;
@@ -26,7 +24,7 @@ const ItemButton = styled(Button)(({ theme }) => ({
 
 const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const [stateError, setStateError] = useState<{
     state: boolean;
     title: string;
@@ -57,9 +55,6 @@ const SingIn: React.FC<SingInProps> = ({ handleSingUp }) => {
       if (response.status === 200) {
         localStorage.setItem("user", JSON.stringify(response.data.user));
         localStorage.setItem("access_token", JSON.stringify(response.data.access_token));
-        dispatch(setAccessToken(response.data.access_token));
-        dispatch(setUser(response.data.user));
-
         return navigate("/");
       } else {
         setStateError({
